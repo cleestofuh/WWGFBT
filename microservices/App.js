@@ -16,9 +16,9 @@ app.use(function (req, res, next) {
 });
 
 // Global Vars
-app.get('/getShops/:term/:location', (req, res) => {
+app.get('/getShops/:categories/:location', (req, res) => {
     client.search({
-        term: req.params.term,
+        categories: req.params.categories,
         location: req.params.location,
         limit: 50,
     }).then(response => {

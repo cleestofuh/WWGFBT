@@ -24,8 +24,13 @@ class App extends Component {
   }
 
   async getShopList(){
-    let response = await fetch(YELP_API_URL + '/boba/' + this.state.location)
+    let response = await fetch(YELP_API_URL + '/bubbletea/' + this.state.location)
+
+    console.log('location: ' + this.state.location)
+
     let shops = await response.json()
+
+    console.log('results: ' + shops.data.length)
 
     let RNG = Math.floor(Math.random() * shops.data.length)
 
