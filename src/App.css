@@ -1,5 +1,9 @@
+
+
 .App {
   text-align: center;
+  font-family: "SF Pro Display"; 
+  color: #222;
 }
 
 .App-logo {
@@ -8,14 +12,15 @@
 }
 
 .App-header {
-  background-color: #282c34;
+  background: url(uwu-bg.png);
+  background-repeat: repeat;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
-  color: white;
+  color: #222222;
 }
 
 .App-link {
@@ -37,4 +42,29 @@
 
 a{
   color: #61dafb;
+}
+
+.main-header { 
+  font-size: 36px;  
+  font-weight: 900;
+  text-align: center;
+}
+
+.we-out {
+  font-size: 36px;
+  font-weight: 600;
+}
+
+#shopNameContainer {
+  color: #222;
+}
+
+.brown-btn { 
+  width: 261px; 
+  border-radius: 28px;  
+  background-color: #544C45;
+  font-size: 20px;
+  padding: 15px 0 15px 0;
+  color: white;
+  font-weight: 600;
 }

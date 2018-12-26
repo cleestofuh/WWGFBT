@@ -19,10 +19,10 @@ class App extends Component {
     return (
       <div className="App">
         <header className="App-header">
-          <p onClick={() => this.getShopList()} className='clickable'>
-            FIND ME SOME FUCKING BOBA
-          </p>
-          <a target='_blank' id='shopNameContainer'></a>
+          <h1 class="main-header">Where we goin&rsquo;  for<br/>bubble tea?</h1>
+          <p class="we-out">We out to <a target="_blank" id='shopNameContainer'></a>!</p>
+          <p onClick={() => this.getShopList()} className='clickable brown-btn'>
+            See where we goin&rsquo;</p>
         </header>
       </div>
     );
