@@ -7,7 +7,8 @@ class App extends Component {
     super(props);
     this.state = {
       location: '',
-      placeholder: 'Enter City or Zip'
+      placeholder: 'Enter City or Zip',
+      category: '/bubbletea/'
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -24,7 +25,7 @@ class App extends Component {
   }
 
   async getShopList(){
-    let response = await fetch(YELP_API_URL + '/bubbletea/' + this.state.location)
+    let response = await fetch(YELP_API_URL + this.state.category + this.state.location)
 
     console.log('location: ' + this.state.location)
 
