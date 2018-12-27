@@ -22,6 +22,7 @@ app.get('/getShops', (req, res) => {
         location: req.query.location,
         limit: 50,
     }).then(response => {
+        console.log('CALLING SERVICE')
         // Sending return message
         res.status(200).send({
             success: 'true',

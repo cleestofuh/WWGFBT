@@ -28,9 +28,17 @@ class App extends Component {
 
     async getShopList() {
         let response, shops
-        // Calls API, converts to json synchronously 
-        response = await fetch(`${YELP_API_URL}?category=${this.state.category}&location=${this.state.location}`)
-        shops = await response.json()
+
+        // Checking localstorage for existence of location array
+        if(window.localStorage.getItem(this.state.location)){
+            shops = JSON.parse(window.localStorage.getItem(this.state.location))
+        }
+        else{
+            // Calls API, converts to json synchronously 
+            response = await fetch(`${YELP_API_URL}?category=${this.state.category}&location=${this.state.location}`)
+            shops = await response.json()
+            window.localStorage.setItem(this.state.location, JSON.stringify(shops))
+        }
 
         // Error check for API response
         if (!shops.message.error) {
