@@ -58,9 +58,8 @@ class App extends Component {
     // Helper function to display a random boba shop
     showRandomShop(shops){
         // RNG number from 0 to array length
-        console.log(shops.data)
         let RNG = Math.floor(Math.random() * shops.data.length)
-
+   console.log(shops.data[RNG].location.display_address)
         // Updating result container
         let container = document.getElementById('shopNameContainer')
         let errorContainer = document.getElementById('errorText')
@@ -163,6 +162,7 @@ class App extends Component {
                             <p id='errorText'></p>
                             {/*eslint-disable-next-line*/}
                             <div class="we-out" style={{ display: (showing ? 'block' : 'none') }}>
+                              <span id="locationRef">San Diego, CA 92130</span>
                               <p class="we-out-text">We out to <a target="_blank" id='shopNameContainer' href="#"></a></p>
                               <img height="20px" alt="yelp rating" id="yelpRating" src={require("./assets/yelpstars/regular_5@3x.png")}/>
                               <span id="reviewCount"></span>
