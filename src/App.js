@@ -17,6 +17,9 @@ class App extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
+    // defines hidden state
+    state = { showing: true };
+
     // Handles any change & keystroke on input field
     handleChange(event) {
         this.setState({ location: event.target.value });
@@ -54,16 +57,70 @@ class App extends Component {
     // Helper function to display a random boba shop
     showRandomShop(shops){
         // RNG number from 0 to array length
+        console.log(shops.data)
         let RNG = Math.floor(Math.random() * shops.data.length)
 
         // Updating result container
         let container = document.getElementById('shopNameContainer')
         let errorContainer = document.getElementById('errorText')
+        let ratingContainer = document.getElementById('yelpRating')
 
         errorContainer.innerHTML = ''
         container.innerHTML = shops.data[RNG].name
         container.href = shops.data[RNG].url
+
+        let rating = shops.data[RNG].rating
+        ratingContainer.src = this.getStarImages(rating)
     }
+
+    getStarImages(rating) {
+        let zeroStars = require("./assets/yelpstars/regular_0@3x.png")
+        let oneStars = require("./assets/yelpstars/regular_1@3x.png")
+        let oneHalfStars = require("./assets/yelpstars/regular_1_half@3x.png")
+        let twoStars = require("./assets/yelpstars/regular_2@3x.png")
+        let twoHalfStars = require("./assets/yelpstars/regular_2_half@3x.png")
+        let threeStars = require("./assets/yelpstars/regular_3@3x.png")
+        let threeHalfStars = require("./assets/yelpstars/regular_3_half@3x.png")
+        let fourStars = require("./assets/yelpstars/regular_4@3x.png")
+        let fourHalfStars = require("./assets/yelpstars/regular_4_half@3x.png")
+        let fiveStars = require("./assets/yelpstars/regular_5@3x.png")
+
+        switch(rating) {
+            case 0:
+                return zeroStars
+                break
+            case 1:
+                return oneStars
+                break
+            case 1.5:
+                return oneHalfStars
+                break
+            case 2:
+                return twoStars
+                break
+            case 2.5:
+                return twoHalfStars
+                break
+            case 3:
+                return threeStars
+                break
+            case 3.5:
+                return threeHalfStars
+                break
+            case 4:
+                return fourStars
+                break
+            case 4.5:
+                return fourHalfStars
+                break
+            case 5:
+                return fiveStars
+                break
+            default:
+                break
+        }
+    }
+
 
     // Helper function to handle error condition
     showErrorText(){
@@ -74,6 +131,8 @@ class App extends Component {
     }
 
     render() {
+      // define hidden state
+      const { showing } = this.state;
         return (
             <div className="App">
                 <header className="App-header">
@@ -83,20 +142,19 @@ class App extends Component {
                         <h1 className="main-header">Where we goin&rsquo;  for<br />bubble tea?</h1>
 
                         <form onSubmit={this.handleSubmit}>
-                            <label>
+                            <label style={{ display: (!showing ? 'block' : 'none') }}>
                                 <input class="input-form" value={this.state.location} onChange={this.handleChange} placeholder={this.state.placeholder} />
                             </label>
                             <p id='errorText'></p>
                             {/*eslint-disable-next-line*/}
-                            <div class="we-out">
-                              <p>We out to <a target="_blank" id='shopNameContainer'></a>!</p>
-                              <img height="20px" alt="yelp rating" src={require("./assets/yelpstars/regular_5@2x.png")}/>
-                              <span class="distance">0.2mi</span>
+                            <div class="we-out" style={{ display: (showing ? 'block' : 'none') }}>
+                              <p>We out to <a target="_blank" id='shopNameContainer' href="#"></a>!</p>
+                              <img height="20px" alt="yelp rating" id="yelpRating" src={require("./assets/yelpstars/regular_5@3x.png")}/>
                             </div>
                             <br/>
-                            <button className='clickable brown-btn'>See where we goin&rsquo;</button>
+                            <button className='clickable brown-btn' onClick={() => this.setState({ showing: true })}>See where we goin&rsquo;</button>
                         </form>
-                        <span class="clickable under-btn">Start over</span>
+                        <span class="clickable under-btn" style={{ display: (showing ? 'block' : 'none') }} onClick={() => this.setState({ showing: false })}>Start over</span>
 
                       </div> {/* end main */}
 

@@ -89,7 +89,7 @@ a{
   margin-bottom: 10px;
 }
 
-.distance {
+#distanceText {
   font-size: 16px;
   margin-left: 20px;
 }
@@ -124,6 +124,7 @@ a{
 .under-btn {
   font-size: 16px;
   text-decoration: underline;
+  margin-top: 4px;
 }
 
 @media screen and (max-width: 600px){
@@ -136,6 +137,7 @@ a{
 
   .we-out {
     min-height: 129px;
+    min-width: 90%;
   }
 
   .input-form {
