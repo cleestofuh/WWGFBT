@@ -64,6 +64,7 @@ class App extends Component {
         let container = document.getElementById('shopNameContainer')
         let errorContainer = document.getElementById('errorText')
         let ratingContainer = document.getElementById('yelpRating')
+        let reviewCountContainer = document.getElementById('reviewCount')
 
         errorContainer.innerHTML = ''
         container.innerHTML = shops.data[RNG].name
@@ -71,6 +72,8 @@ class App extends Component {
 
         let rating = shops.data[RNG].rating
         ratingContainer.src = this.getStarImages(rating)
+
+        reviewCountContainer.innerHTML = shops.data[RNG].review_count + ' Reviews'
     }
 
     getStarImages(rating) {
@@ -150,11 +153,12 @@ class App extends Component {
                             <div class="we-out" style={{ display: (showing ? 'block' : 'none') }}>
                               <p>We out to <a target="_blank" id='shopNameContainer' href="#"></a>!</p>
                               <img height="20px" alt="yelp rating" id="yelpRating" src={require("./assets/yelpstars/regular_5@3x.png")}/>
+                              <span id="reviewCount">.</span>
                             </div>
                             <br/>
                             <button className='clickable brown-btn' onClick={() => this.setState({ showing: true })}>See where we goin&rsquo;</button>
                         </form>
-                        <span class="clickable under-btn" style={{ display: (showing ? 'block' : 'none') }} onClick={() => this.setState({ showing: false })}>Start over</span>
+                        <span class="clickable under-btn" style={{ display: (showing ? 'block' : 'none') }} onClick={() => this.setState({ showing: false })}>Try another location</span>
 
                       </div> {/* end main */}
 

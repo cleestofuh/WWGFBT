@@ -89,9 +89,16 @@ a{
   margin-bottom: 10px;
 }
 
-#distanceText {
-  font-size: 16px;
+#yelpRating {
+  display: inline;
+}
+
+#reviewCount {
+  font-size: 17px;
   margin-left: 20px;
+  margin-top:-20px;
+  display: inline;
+
 }
 
 #shopNameContainer {
