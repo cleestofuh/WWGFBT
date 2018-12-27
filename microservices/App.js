@@ -16,22 +16,22 @@ app.use(function (req, res, next) {
 });
 
 // Global Vars
-app.get('/getShops/:categories/:location', (req, res) => {
+app.get('/getShops', (req, res) => {
     client.search({
-        categories: req.params.categories,
-        location: req.params.location,
+        categories: req.query.category,
+        location: req.query.location,
         limit: 50,
     }).then(response => {
+        // Sending return message
         res.status(200).send({
             success: 'true',
             message: 'shops retrieved successfully',
             data: response.jsonBody.businesses,
         })
-        console.log(response.jsonBody.businesses)
     }).catch(e => {
         res.status(500).send({
             success: 'false',
-            message: e
+            message: JSON.parse(e.response.body)
         })
     });
 });

@@ -3,62 +3,88 @@ import './App.css'
 import { YELP_API_URL } from './profiles/dev'
 
 class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      location: '',
-      placeholder: 'Enter City or Zip',
-      category: '/bubbletea/'
-    };
+    constructor(props) {
+        super(props);
+        this.state = {
+            location: '',
+            placeholder: 'Enter City or Zip',
+            category: 'bubbletea'
+        };
 
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-  }
+        this.handleChange = this.handleChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
+    }
 
-  handleChange(event) {
-    this.setState({location: event.target.value});
-  }
+    // Handles any change & keystroke on input field
+    handleChange(event) {
+        this.setState({ location: event.target.value });
+    }
 
-  handleSubmit(event) {
-    this.getShopList();
-    event.preventDefault();
-  }
+    // Handles form submission
+    handleSubmit(event) {
+        this.getShopList();
+        event.preventDefault();
+    }
 
-  async getShopList(){
-    let response = await fetch(YELP_API_URL + this.state.category + this.state.location)
+    async getShopList() {
+        let response, shops
+        // Calls API, converts to json synchronously 
+        response = await fetch(`${YELP_API_URL}?category=${this.state.category}&location=${this.state.location}`)
+        shops = await response.json()
 
-    console.log('location: ' + this.state.location)
+        // Error check for API response
+        if (!shops.message.error) {
+            this.showRandomShop(shops)
+        }
+        else {
+            this.showErrorText()
+        }
+    }
 
-    let shops = await response.json()
+    // Helper function to display a random boba shop
+    showRandomShop(shops){
+        // RNG number from 0 to array length
+        let RNG = Math.floor(Math.random() * shops.data.length)
 
-    console.log('results: ' + shops.data.length)
+        // Updating result container
+        let container = document.getElementById('shopNameContainer')
+        let errorContainer = document.getElementById('errorText')
 
-    let RNG = Math.floor(Math.random() * shops.data.length)
+        errorContainer.innerHTML = ''
+        container.innerHTML = shops.data[RNG].name
+        container.href = shops.data[RNG].url
+    }
 
-    let container = document.getElementById('shopNameContainer')
-    container.innerHTML = shops.data[RNG].name
-    container.href = shops.data[RNG].url      
-  }
+    // Helper function to handle error condition
+    showErrorText(){
+        // TODO: I've created the error condition, do what you want with this part!
+        let errorContainer = document.getElementById('errorText')
+        errorContainer.innerHTML = 'ENTUWU A FUWUCKING PWOPWER LOCAWTUWUN'
+        // console.log(shops.message.error)
+    }
 
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <h1 class="main-header">Where we goin&rsquo;  for<br/>bubble tea?</h1>
-          <p class="we-out">We out to <a target="_blank" id='shopNameContainer'></a>!</p>
+    render() {
+        return (
+            <div className="App">
+                <header className="App-header">
+                    <h1 className="main-header">Where we goin&rsquo;  for<br />bubble tea?</h1>
 
-          <form onSubmit={this.handleSubmit}>
-            <label>
-              <input value={this.state.location} onChange={this.handleChange} placeholder={this.state.placeholder}/>
-            </label>
-            <button className='clickable brown-btn'>See where we droppin&rsquo;</button>
-          </form>
+                    {/*eslint-disable-next-line*/}
+                    <p className="we-out">We out to <a target="_blank" id='shopNameContainer'></a>!</p>
 
-        </header>
-      </div>
-    );
-  }
+                    <form onSubmit={this.handleSubmit}>
+                        <label>
+                            <input value={this.state.location} onChange={this.handleChange} placeholder={this.state.placeholder} />
+                        </label>
+                        <button className='clickable brown-btn'>See where we droppin&rsquo;</button>
+                    </form>
+
+                    <p id='errorText'></p>
+
+                </header>
+            </div>
+        );
+    }
 
 }
 export default App;
-
