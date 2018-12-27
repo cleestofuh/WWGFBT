@@ -17,7 +17,7 @@ class App extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-    // defines hidden state
+    // Defines hidden state
     state = { showing: true };
 
     // Handles any change & keystroke on input field
@@ -27,6 +27,7 @@ class App extends Component {
 
     // Handles form submission
     handleSubmit(event) {
+        document.getElementById('goButton').innerHTML = "Find another place"
         this.getShopList();
         event.preventDefault();
     }
@@ -66,8 +67,19 @@ class App extends Component {
         let ratingContainer = document.getElementById('yelpRating')
         let reviewCountContainer = document.getElementById('reviewCount')
 
+        // Truncate result based on screen size
+        let maxNameLength = 20
+        let name = shops.data[RNG].name
+        if (shops.data[RNG].name.length > maxNameLength && window.screen.width <= 600) {
+            name = shops.data[RNG].name.substring(0, maxNameLength) + "..."
+        }
+        else {
+            name = name + '!'
+        }
+
+
         errorContainer.innerHTML = ''
-        container.innerHTML = shops.data[RNG].name
+        container.innerHTML = name
         container.href = shops.data[RNG].url
 
         let rating = shops.data[RNG].rating
@@ -151,12 +163,12 @@ class App extends Component {
                             <p id='errorText'></p>
                             {/*eslint-disable-next-line*/}
                             <div class="we-out" style={{ display: (showing ? 'block' : 'none') }}>
-                              <p>We out to <a target="_blank" id='shopNameContainer' href="#"></a>!</p>
+                              <p class="we-out-text">We out to <a target="_blank" id='shopNameContainer' href="#"></a></p>
                               <img height="20px" alt="yelp rating" id="yelpRating" src={require("./assets/yelpstars/regular_5@3x.png")}/>
-                              <span id="reviewCount">.</span>
+                              <span id="reviewCount"></span>
                             </div>
                             <br/>
-                            <button className='clickable brown-btn' onClick={() => this.setState({ showing: true })}>See where we goin&rsquo;</button>
+                            <button id="goButton" className='clickable brown-btn' onClick={() => this.setState({ showing: true })}>See where we goin&rsquo;</button>
                         </form>
                         <span class="clickable under-btn" style={{ display: (showing ? 'block' : 'none') }} onClick={() => this.setState({ showing: false })}>Try another location</span>
 
