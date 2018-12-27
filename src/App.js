@@ -45,9 +45,8 @@ class App extends Component {
             shops = await response.json()
             window.localStorage.setItem(this.state.location, JSON.stringify(shops))
         }
-
         // Error check for API response
-        if (!shops.message.error) {
+        if (shops.data.length != 0) {
             this.showRandomShop(shops)
         }
         else {
@@ -139,7 +138,9 @@ class App extends Component {
     // Helper function to handle error condition
     showErrorText(){
         // TODO: I've created the error condition, do what you want with this part!
+        console.log('invalid location')
         let errorContainer = document.getElementById('errorText')
+        let container = document.getElementById('shopNameContainer')
         errorContainer.innerHTML = 'We couldn&rsquo;t find your location. Please try again.'
         // console.log(shops.message.error)
     }
