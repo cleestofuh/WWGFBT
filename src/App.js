@@ -9,16 +9,17 @@ class App extends Component {
         super(props);
         this.state = {
             location: '',
-            placeholder: 'Enter City or Zip',
-            category: 'bubbletea'
         };
 
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.placeholder = 'Enter City or Zip';
+        this.category = 'bubbletea';
+        this.showing = false;
     }
 
     // Defines hidden state
-    state = { showing: true };
+    //state = { showing: true };
 
     // Handles any change & keystroke on input field
     handleChange(event) {
@@ -142,6 +143,7 @@ class App extends Component {
         let errorContainer = document.getElementById('errorText')
         let container = document.getElementById('shopNameContainer')
         errorContainer.innerHTML = 'We couldn&rsquo;t find your location. Please try again.'
+        this.state.showing = false
         // console.log(shops.message.error)
     }
 
