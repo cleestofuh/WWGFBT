@@ -3,8 +3,7 @@
 }
 
 html, body {
-  height: 100%;
-  width: 100%;
+
 }
 
 .App {
@@ -84,6 +83,7 @@ a{
 
 #tryAgain {
   display: none;
+  color: #999999;
 }
 
 .we-out {
@@ -99,8 +99,9 @@ a{
 }
 
 #locationRef {
-  font-size:17px;
-  font-weight: 500;
+  display: block;
+  font-size: 12px;
+  font-weight: 300;
   margin: 0;
 }
 

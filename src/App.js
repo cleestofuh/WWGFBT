@@ -40,7 +40,7 @@ class App extends Component {
     }
 
     showHTML(tagID) {
-      if(tagID == 'weOutDiv') {
+      if(tagID == 'weOutDiv' || tagID == 'locationRef') {
           document.getElementById(tagID).style.display = 'block'
       } else {
           document.getElementById(tagID).style.display = 'initial'
