@@ -58,7 +58,6 @@ class App extends Component {
     showRandomShop(shops){
         // RNG number from 0 to array length
         let RNG = Math.floor(Math.random() * shops.data.length)
-   console.log(shops.data[RNG].location.display_address)
         // Updating result container
         let container = document.getElementById('shopNameContainer')
         let errorContainer = document.getElementById('errorText')
@@ -66,8 +65,6 @@ class App extends Component {
         let reviewCountContainer = document.getElementById('reviewCount')
         let locationRef = document.getElementById('locationRef')
         let address = shops.data[RNG].location.display_address
-        let fullAddress = "";
-        console.log('fulladdress:' + fullAddress)
         locationRef.innerHTML = address.join(", ")
         // Truncate result based on screen size
         let maxNameLength = 20
