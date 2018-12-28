@@ -27,7 +27,6 @@ class App extends Component {
 
     // Handles form submission
     handleSubmit(event) {
-        document.getElementById('goButton').innerHTML = "Find another place"
         this.showHTML('weOutDiv')
         this.showHTML('tryAgain')
         this.hideHTML('locationInput')
@@ -67,6 +66,8 @@ class App extends Component {
         }
         else {
             this.showErrorText()
+            this.hideHTML('weOutDiv')
+            this.hideHTML('goButton')
         }
     }
 
@@ -157,7 +158,7 @@ class App extends Component {
     showErrorText(){
         // TODO: I've created the error condition, do what you want with this part!
         let errorContainer = document.getElementById('errorText')
-        errorContainer.innerHTML = 'We couldn&rsquo;t find your location. Please try again.'
+        errorContainer.innerHTML = 'We couldn&rsquo;t find bubble tea places matching your location.'
         // console.log(shops.message.error)
     }
 
@@ -187,7 +188,8 @@ class App extends Component {
                             <br/>
                             <button id="goButton" className='clickable brown-btn'>See where we goin&rsquo;</button>
                         </form>
-                        <span className="clickable under-btn" id="tryAgain" onClick={() => {this.showHTML('locationInput'); this.hideHTML('weOutDiv') ; this.hideHTML('tryAgain')}}>Try another location</span>
+                        <span className="clickable under-btn" id="tryAgain" onClick={() => {this.showHTML('locationInput') ; this.showHTML('goButton') ; this.hideHTML('weOutDiv') ; this.hideHTML('tryAgain')}}>Try another location</span>
+
                       </div> {/* end main */}
 
                       <div className="drink">
