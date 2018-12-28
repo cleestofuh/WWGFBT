@@ -46,7 +46,7 @@ class App extends Component {
             window.localStorage.setItem(this.state.location, JSON.stringify(shops))
         }
         // Error check for API response
-        if (shops.data.length != 0) {
+        if (!shops.message.error && shops.data.length != 0) {
             this.showRandomShop(shops)
         }
         else {
