@@ -67,14 +67,8 @@ class App extends Component {
         let locationRef = document.getElementById('locationRef')
         let address = shops.data[RNG].location.display_address
         let fullAddress = "";
-        console.log('length' + address.length)
-        for (var ndx = 0; ndx < address.length - 1; ndx++) {
-          console.log('hello')
-          fullAddress += (address[ndx] + ", ")
-        }
-        fullAddress += address[address.length - 1]
         console.log('fulladdress:' + fullAddress)
-        locationRef.innerHTML = fullAddress
+        locationRef.innerHTML = address.join(", ")
         // Truncate result based on screen size
         let maxNameLength = 20
         let name = shops.data[RNG].name
