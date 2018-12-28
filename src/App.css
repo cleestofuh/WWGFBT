@@ -139,6 +139,7 @@ a{
   font-size: 16px;
   text-decoration: underline;
   margin-top: 4px;
+  display: initial !important;
 }
 
 @media screen and (max-width: 600px){
