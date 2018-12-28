@@ -64,7 +64,17 @@ class App extends Component {
         let errorContainer = document.getElementById('errorText')
         let ratingContainer = document.getElementById('yelpRating')
         let reviewCountContainer = document.getElementById('reviewCount')
-
+        let locationRef = document.getElementById('locationRef')
+        let address = shops.data[RNG].location.display_address
+        let fullAddress = "";
+        console.log('length' + address.length)
+        for (var ndx = 0; ndx < address.length - 1; ndx++) {
+          console.log('hello')
+          fullAddress += (address[ndx] + ", ")
+        }
+        fullAddress += address[address.length - 1]
+        console.log('fulladdress:' + fullAddress)
+        locationRef.innerHTML = fullAddress
         // Truncate result based on screen size
         let maxNameLength = 20
         let name = shops.data[RNG].name
@@ -74,7 +84,6 @@ class App extends Component {
         else {
             name = name + '!'
         }
-
 
         errorContainer.innerHTML = ''
         container.innerHTML = name
@@ -163,7 +172,7 @@ class App extends Component {
                             <p id='errorText'></p>
                             {/*eslint-disable-next-line*/}
                             <div class="we-out" style={{ display: (showing ? 'block' : 'none') }}>
-                              <span id="locationRef">San Diego, CA 92130</span>
+                              <span id="locationRef"></span>
                               <p class="we-out-text">We out to <a target="_blank" id='shopNameContainer' href="#"></a></p>
                               <img height="20px" alt="yelp rating" id="yelpRating" src={require("./assets/yelpstars/regular_5@3x.png")}/>
                               <span id="reviewCount"></span>
