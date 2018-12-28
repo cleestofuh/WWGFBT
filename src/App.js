@@ -15,7 +15,6 @@ class App extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
         this.placeholder = 'Enter City or Zip';
         this.category = 'bubbletea';
-        this.showing = false;
     }
 
     // Defines hidden state
@@ -29,8 +28,24 @@ class App extends Component {
     // Handles form submission
     handleSubmit(event) {
         document.getElementById('goButton').innerHTML = "Find another place"
+        this.showHTML('weOutDiv')
+        this.showHTML('tryAgain')
+        this.hideHTML('locationInput')
         this.getShopList();
         event.preventDefault();
+    }
+
+    hideHTML(tagID) {
+      document.getElementById(tagID).style.display = 'none'
+    }
+
+    showHTML(tagID) {
+      if(tagID === 'weOutDiv') {
+          document.getElementById(tagID).style.display = 'block'
+      } else {
+          document.getElementById(tagID).style.display = 'initial'
+      }
+
     }
 
     async getShopList() {
@@ -59,12 +74,14 @@ class App extends Component {
     showRandomShop(shops){
         // RNG number from 0 to array length
         let RNG = Math.floor(Math.random() * shops.data.length)
-        //console.log(shops.data[RNG].location.display_address)
         // Updating result container
         let container = document.getElementById('shopNameContainer')
         let errorContainer = document.getElementById('errorText')
         let ratingContainer = document.getElementById('yelpRating')
         let reviewCountContainer = document.getElementById('reviewCount')
+        let locationRef = document.getElementById('locationRef')
+        let address = shops.data[RNG].location.display_address
+        locationRef.innerHTML = address.join(", ")
 
         // Truncate result based on screen size
         let maxNameLength = 20
@@ -102,24 +119,34 @@ class App extends Component {
         switch(rating) {
             case 0:
                 return zeroStars
+          
             case 1:
                 return oneStars
+       
             case 1.5:
                 return oneHalfStars
+              
             case 2:
                 return twoStars
+         
             case 2.5:
                 return twoHalfStars
+      
             case 3:
                 return threeStars
+          
             case 3.5:
                 return threeHalfStars
+          
             case 4:
                 return fourStars
+        
             case 4.5:
                 return fourHalfStars
+            
             case 5:
                 return fiveStars
+           
             default:
                 break
         }
@@ -131,13 +158,11 @@ class App extends Component {
         // TODO: I've created the error condition, do what you want with this part!
         let errorContainer = document.getElementById('errorText')
         errorContainer.innerHTML = 'We couldn&rsquo;t find your location. Please try again.'
-        this.showing = false
         // console.log(shops.message.error)
     }
 
+
     render() {
-      // define hidden state
-      const { showing } = this.state;
         return (
             <div className="App">
                 <header className="App-header">
@@ -147,23 +172,22 @@ class App extends Component {
                         <h1 className="main-header">Where we goin&rsquo;  for<br />bubble tea?</h1>
 
                         <form onSubmit={this.handleSubmit}>
-                            <label style={{ display: (!showing ? 'block' : 'none') }}>
-                                <input className="input-form" value={this.state.location} onChange={this.handleChange} placeholder={this.placeholder} />
-                            </label>
+                            <div>
+                                <input id="locationInput" className="input-form" value={this.state.location} onChange={this.handleChange} placeholder={this.placeholder} />
+                            </div>
                             <p id='errorText'></p>
                             {/*eslint-disable-next-line*/}
-                            <div className="we-out" style={{ display: (showing ? 'block' : 'none') }}>
-                              <span id="locationRef">San Diego, CA 92130</span>
+                            <div className="we-out" id="weOutDiv">
+                              <span id="locationRef"></span>
                               {/*eslint-disable-next-line*/}
                               <p className="we-out-text">We out to <a target="_blank" id='shopNameContainer' href="#"></a></p>
                               <img height="20px" alt="yelp rating" id="yelpRating" src={require("./assets/yelpstars/regular_5@3x.png")}/>
                               <span id="reviewCount"></span>
                             </div>
                             <br/>
-                            <button id="goButton" className='clickable brown-btn' onClick={() => this.setState({ showing: true })}>See where we goin&rsquo;</button>
+                            <button id="goButton" className='clickable brown-btn'>See where we goin&rsquo;</button>
                         </form>
-                        <span className="clickable under-btn" style={{ display: (showing ? 'block' : 'none') }} onClick={() => this.setState({ showing: false })}>Try another location</span>
-
+                        <span className="clickable under-btn" id="tryAgain" onClick={() => {this.showHTML('locationInput'); this.hideHTML('weOutDiv') ; this.hideHTML('tryAgain')}}>Try another location</span>
                       </div> {/* end main */}
 
                       <div className="drink">
