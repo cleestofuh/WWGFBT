@@ -160,7 +160,7 @@ class App extends Component {
 
                         <form onSubmit={this.handleSubmit}>
                             <label style={{ display: (!showing ? 'block' : 'none') }}>
-                                <input class="input-form" value={this.state.location} onChange={this.handleChange} placeholder={this.state.placeholder} />
+                                <input class="input-form" value={this.state.location} onChange={this.handleChange} placeholder={this.placeholder} />
                             </label>
                             <p id='errorText'></p>
                             {/*eslint-disable-next-line*/}
