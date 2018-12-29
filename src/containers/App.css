@@ -18,7 +18,7 @@ html, body {
 }
 
 .App-header {
-  background: url(assets/uwu-bg.png);
+  background: url(../assets/uwu-bg.png);
   background-repeat: repeat;
   min-height: 100vh;
   display: flex;
