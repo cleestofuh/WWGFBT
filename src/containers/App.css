@@ -179,7 +179,11 @@ a{
   transform: translate(0px, -18px);
   offset-path: path('M51.5333333,415.337838 L188.5,2.95578557');
   offset-distance: 0%;
-  animation: drink-boba 3s linear infinite;
+  animation: drink-boba 1s linear;
+  -moz-animation: drink-boba 1s linear;
+  -webkit-animation: drink-boba 1s linear;
+  -o-animation: drink-boba 1s linear;
+  -ms-animation: drink-boba 1s linear;
 }
 
 @keyframes drink-boba {
@@ -190,6 +194,43 @@ a{
     offset-distance: 100%;
   }
 }
+@-moz-keyframes logo  /* Firefox */
+{
+  from {
+    offset-distance: 0%;
+  }
+  to {
+    offset-distance: 100%;
+  }
+}
+@-webkit-keyframes logo  /* Safari and Chrome */
+{
+  from {
+    offset-distance: 0%;
+  }
+  to {
+    offset-distance: 100%;
+  }
+}
+@-o-keyframes logo  /* Opera */
+{
+  from {
+    offset-distance: 0%;
+  }
+  to {
+    offset-distance: 100%;
+  }
+}
+@-ms-keyframes logo  /* IE */
+{
+  from {
+    offset-distance: 0%;
+  }
+  to {
+    offset-distance: 100%;
+  }
+}
+
 
 @media screen and (max-width: 600px){
   .main {
