@@ -17,8 +17,17 @@ class App extends Component {
         this.category = 'bubbletea';
     }
 
-    // Defines hidden state
-    //state = { showing: true };
+    // Mounts event listener after first render
+    componentDidMount(){
+        document.addEventListener('keydown', this.onKeyPressed.bind(this))
+    }
+
+    // Listens to enter keystroke to display new shop
+    onKeyPressed(e){
+        if(e.key === 'Enter'){
+            this.handleSubmit(e)
+        }
+    }
 
     // Handles any change & keystroke on input field
     handleChange(event) {
@@ -34,10 +43,12 @@ class App extends Component {
         event.preventDefault();
     }
 
+    // Helper function to hide HTML
     hideHTML(tagID) {
       document.getElementById(tagID).style.display = 'none'
     }
 
+    // Helper function to show HTML
     showHTML(tagID) {
       if(tagID === 'weOutDiv' || tagID === 'locationRef') {
           document.getElementById(tagID).style.display = 'block'
@@ -152,7 +163,6 @@ class App extends Component {
                 break
         }
     }
-
 
     // Helper function to handle error condition
     showErrorText(){
