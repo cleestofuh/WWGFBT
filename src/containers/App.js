@@ -261,9 +261,9 @@ class App extends Component {
                     </div> {/* end flex-container */}
                 </header>
                 <footer>
-                    <small>&copy; Copyright 2018, Made with <span aria-labelledby="jsx-a11y/accessible-emoji" role="img">❤</span>️ by the ABB</small>
-                    <br/>
                     <small>Send us feedback at WWGFBT@gmail.com</small>
+                    <br/>
+                    <small>&copy; Copyright 2018, Made with <span aria-labelledby="jsx-a11y/accessible-emoji" role="img">❤</span>️ by the ABB</small>
                 </footer>
             </div>
         );
