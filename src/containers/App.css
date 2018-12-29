@@ -186,60 +186,25 @@ a{
    height: 100vh;
 }
 
-.move-boba {
-  transform: translate(0px, -18px);
-  offset-path: path('M51.5333333,415.337838 L188.5,2.95578557');
-  offset-distance: 0%;
-  animation: drink-boba 1s linear;
-  -moz-animation: drink-boba 1s linear;
-  -webkit-animation: drink-boba 1s linear;
-  -o-animation: drink-boba 1s linear;
-  -ms-animation: drink-boba 1s linear;
-}
 
-@keyframes drink-boba {
-  from {
-    offset-distance: 0%;
-  }
-  to {
-    offset-distance: 100%;
-  }
-}
-@-moz-keyframes drink-boba  
-{
-  from {
-    offset-distance: 0%;
-  }
-  to {
-    offset-distance: 100%;
-  }
-}
-@-webkit-keyframes drink-boba  
-{
-  from {
-    offset-distance: 0%;
-  }
-  to {
-    offset-distance: 100%;
-  }
-}
-@-o-keyframes drink-boba  
-{
-  from {
-    offset-distance: 0%;
-  }
-  to {
-    offset-distance: 100%;
-  }
-}
-@-ms-keyframes drink-boba  
-{
-  from {
-    offset-distance: 0%;
-  }
-  to {
-    offset-distance: 100%;
-  }
+/* Chrome 29+ */
+@media screen and (-webkit-min-device-pixel-ratio:0)
+  and (min-resolution:.001dpcm) {
+    .move-boba {
+      transform: translate(0px, -18px);
+      offset-path: path('M51.5333333,415.337838 L188.5,2.95578557');
+      offset-distance: 0%;
+      animation: drink-boba 1s ease;
+    }
+
+    @keyframes drink-boba {
+      from {
+        offset-distance: 0%;
+      }
+      to {
+        offset-distance: 100%;
+      }
+    } 
 }
 
 
