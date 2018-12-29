@@ -9,7 +9,6 @@ class App extends Component {
         super(props);
         this.state = {
             location: '',
-            history: new Map()
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -58,7 +57,6 @@ class App extends Component {
         } else {
             document.getElementById(tagID).style.display = 'initial'
         }
-
     }
 
     // Adds boba movement class
@@ -129,15 +127,24 @@ class App extends Component {
 
     // Helper function to add shop+url to history
     addShopToHistory(shop, url) {
-        // Only adds to history of new shop+url is not a duplicate
-        if (!this.state.history.has(url)) {
-            // Deletes oldest shop+url if map is at capacity
-            if (this.state.history.size === this.maxHistory) {
-                this.state.history.delete(this.state.history.entries().next().value[0]);
-            }
-            // Set key as url because some regions may have have multiple of the same franchise
-            this.state.history.set(url, shop); 
+        let div = document.getElementById("historyContainer");
+
+        // Find potential duplicate in historyContainer div and remove it to readd it to the front
+        let duplicates = div.querySelectorAll("a[href='"+url+"']");
+        for (let i = 0; i < duplicates.length; i++) {
+            div.removeChild(duplicates[i]);
         }
+
+        // Removes the last entry in the history if the container reaches capacity
+        if (div.childNodes.length >= this.maxHistory) {
+            div.removeChild(div.lastChild);
+        } 
+
+        // Adds a new text node to the front of the history
+        let item = document.createElement('a')
+        item.href = url;
+        item.innerHTML = shop;
+        div.insertBefore(item, div.firstChild);
     }
 
     // Helper function to return yelp star img based on rating
@@ -218,6 +225,9 @@ class App extends Component {
                     <button id="goButton" className='clickable brown-btn'>See where we goin&rsquo;</button>
                 </form>
                 <span className="clickable under-btn" id="tryAgain" onClick={() => { this.showHTML('locationInput'); this.showHTML('goButton'); this.hideHTML('weOutDiv'); this.hideHTML('tryAgain') }}>Try another location</span>
+                <p>History</p>
+                <div id="historyContainer">
+                </div>
             </React.Fragment>
         )
     }
