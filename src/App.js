@@ -106,46 +106,46 @@ class App extends Component {
     }
 
     getStarImages(rating) {
-        let zeroStars = require("./assets/yelpstars/regular_0@3x.png")
-        let oneStars = require("./assets/yelpstars/regular_1@3x.png")
-        let oneHalfStars = require("./assets/yelpstars/regular_1_half@3x.png")
-        let twoStars = require("./assets/yelpstars/regular_2@3x.png")
-        let twoHalfStars = require("./assets/yelpstars/regular_2_half@3x.png")
-        let threeStars = require("./assets/yelpstars/regular_3@3x.png")
-        let threeHalfStars = require("./assets/yelpstars/regular_3_half@3x.png")
-        let fourStars = require("./assets/yelpstars/regular_4@3x.png")
-        let fourHalfStars = require("./assets/yelpstars/regular_4_half@3x.png")
-        let fiveStars = require("./assets/yelpstars/regular_5@3x.png")
 
         switch(rating) {
             case 0:
+                let zeroStars = require("./assets/yelpstars/regular_0@3x.png")
                 return zeroStars
           
             case 1:
+                let oneStars = require("./assets/yelpstars/regular_1@3x.png")
                 return oneStars
        
             case 1.5:
+                let oneHalfStars = require("./assets/yelpstars/regular_1_half@3x.png")
                 return oneHalfStars
               
             case 2:
+                let twoStars = require("./assets/yelpstars/regular_2@3x.png")
                 return twoStars
          
             case 2.5:
+                let twoHalfStars = require("./assets/yelpstars/regular_2_half@3x.png")
                 return twoHalfStars
       
             case 3:
+                let threeStars = require("./assets/yelpstars/regular_3@3x.png")
                 return threeStars
           
             case 3.5:
+                let threeHalfStars = require("./assets/yelpstars/regular_3_half@3x.png")
                 return threeHalfStars
           
             case 4:
+                let fourStars = require("./assets/yelpstars/regular_4@3x.png")
                 return fourStars
         
             case 4.5:
+                let fourHalfStars = require("./assets/yelpstars/regular_4_half@3x.png")
                 return fourHalfStars
             
             case 5:
+                let fiveStars = require("./assets/yelpstars/regular_5@3x.png")
                 return fiveStars
            
             default:
@@ -174,7 +174,7 @@ class App extends Component {
 
                         <form onSubmit={this.handleSubmit}>
                             <div>
-                                <input id="locationInput" className="input-form" value={this.state.location} onChange={this.handleChange} placeholder={this.placeholder} />
+                                <input id="locationInput" className="input-form" value={this.state.location} onChange={this.handleChange} placeholder={this.placeholder} onFocus={e => e.target.select()} />
                             </div>
                             <p id='errorText'></p>
                             {/*eslint-disable-next-line*/}
