@@ -39,12 +39,13 @@ class App extends Component {
     handleSubmit(event) {
         this.showHTML('weOutDiv')
         this.showHTML('tryAgain')
-        this.showHTML('history-title');
+        this.showHTML('history-title')
+        this.showHTML('historyContainer')
         this.hideHTML('locationInput')
-        this.getShopList();
+        this.getShopList()
         this.restartBoba()
         this.moveBoba()
-        event.preventDefault();
+        event.preventDefault()
     }
 
     // Helper function to hide HTML
@@ -96,6 +97,8 @@ class App extends Component {
             this.showErrorText()
             this.hideHTML('weOutDiv')
             this.hideHTML('goButton')
+            this.hideHTML('history-title')
+            this.hideHTML('historyContainer')
         }
     }
 
@@ -237,7 +240,7 @@ class App extends Component {
                     <br />
                     <button id="goButton" className='clickable brown-btn'>See where we goin&rsquo;</button>
                 </form>
-                <span className="clickable under-btn" id="tryAgain" onClick={() => { this.showHTML('history-title'); this.showHTML('locationInput'); this.showHTML('goButton'); this.hideHTML('weOutDiv'); this.hideHTML('tryAgain') }}>Try another location</span>
+                <span className="clickable under-btn" id="tryAgain" onClick={() => { this.hideHTML('history-title'); this.hideHTML('historyContainer'); this.showHTML('locationInput'); this.showHTML('goButton'); this.hideHTML('weOutDiv'); this.hideHTML('tryAgain') }}>Try another location</span>
                 <p id="history-title">History</p>
                 <div id="historyContainer">
                 </div>
