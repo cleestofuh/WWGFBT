@@ -8,6 +8,10 @@ html, body {
     overflow: hidden;
 }
 
+body {
+ position: relative;
+}
+
 .App {
   text-align: center;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
@@ -138,12 +142,17 @@ a{
 
 .brown-btn { 
   width: 261px; 
-  border-radius: 28px;  
+  border: none;
+  border-radius: 50px;  
   background-color: #544C45;
   font-size: 20px;
   padding: 15px 0 15px 0;
   color: white;
   font-weight: 600;
+}
+
+.brown-btn:focus {
+  outline: none;
 }
 
 .under-btn {
@@ -196,7 +205,7 @@ a{
     offset-distance: 100%;
   }
 }
-@-moz-keyframes logo  /* Firefox */
+@-moz-keyframes drink-boba  
 {
   from {
     offset-distance: 0%;
@@ -205,7 +214,7 @@ a{
     offset-distance: 100%;
   }
 }
-@-webkit-keyframes logo  /* Safari and Chrome */
+@-webkit-keyframes drink-boba  
 {
   from {
     offset-distance: 0%;
@@ -214,7 +223,7 @@ a{
     offset-distance: 100%;
   }
 }
-@-o-keyframes logo  /* Opera */
+@-o-keyframes drink-boba  
 {
   from {
     offset-distance: 0%;
@@ -223,7 +232,7 @@ a{
     offset-distance: 100%;
   }
 }
-@-ms-keyframes logo  /* IE */
+@-ms-keyframes drink-boba  
 {
   from {
     offset-distance: 0%;
@@ -242,15 +251,17 @@ a{
     max-width: 90%;
   }
   .drink {
-    width: 90%;
+    text-align: center;
+    width: 10%;
     max-height: 50vh;
     bottom: 0;
     position: absolute;
+    display: none;
   }
   .boba {
     z-index: 1;
     height: 410px;
-    width: 70%;
+    width: 30%;
     margin-left: 50%;
   }
 }
