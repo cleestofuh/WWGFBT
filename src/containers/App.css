@@ -4,6 +4,15 @@
 
 html, body {
     overflow-x: hidden; 
+    overflow-y: hidden;
+    overflow: hidden;
+}
+
+@media screen and (max-width: 600px){
+  html, body {
+    overflow-y: auto;
+    overflow: auto;
+  }
 }
 
 body {
@@ -24,7 +33,6 @@ body {
 .App-header {
   background: url(../assets/uwu-bg.png);
   background-repeat: repeat;
-  min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -191,9 +199,15 @@ a{
 
 /* RIGHT SIDE */
 .boba {
-   height: 100vh;
+   height: 95vh;
 }
 
+footer {
+  display: block;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}
 
 /* Chrome 29+ */
 @media screen and (-webkit-min-device-pixel-ratio:0)
@@ -236,8 +250,11 @@ a{
     width: 30%;
     margin-left: 50%;
   }
-}
-
-footer {
-  display: block;
+  footer {
+    display: block;
+    position: initial;
+    bottom: 0;
+    width: 100%;
+    margin-top: 20px;
+  }
 }
