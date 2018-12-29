@@ -9,12 +9,14 @@ class App extends Component {
         super(props);
         this.state = {
             location: '',
+            history: new Map()
         };
 
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.placeholder = 'Enter City or Zip';
         this.category = 'bubbletea';
+        this.maxHistory = 6;
     }
 
     // Mounts event listener after first render
@@ -101,6 +103,9 @@ class App extends Component {
         let address = shops.data[RNG].location.display_address
         locationRef.innerHTML = address.join(", ")
 
+        // Adding content to history
+        this.addShopToHistory(shops.data[RNG].name, shops.data[RNG].url)
+
         // Truncate result based on screen size
         let maxNameLength = 20
         let name = shops.data[RNG].name
@@ -120,6 +125,19 @@ class App extends Component {
         ratingContainer.src = this.getStarImages(rating)
 
         reviewCountContainer.innerHTML = shops.data[RNG].review_count + ' Reviews'
+    }
+
+    // Helper function to add shop+url to history
+    addShopToHistory(shop, url) {
+        // Only adds to history of new shop+url is not a duplicate
+        if (!this.state.history.has(url)) {
+            // Deletes oldest shop+url if map is at capacity
+            if (this.state.history.size === this.maxHistory) {
+                this.state.history.delete(this.state.history.entries().next().value[0]);
+            }
+            // Set key as url because some regions may have have multiple of the same franchise
+            this.state.history.set(url, shop); 
+        }
     }
 
     // Helper function to return yelp star img based on rating
