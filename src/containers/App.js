@@ -216,6 +216,9 @@ class App extends Component {
                         <BobaSVG />
                     </div> {/* end flex-container */}
                 </header>
+                <footer>
+                    <small>&copy; Copyright 2018, Made with ❤️ by the ABB</small>
+                </footer>
             </div>
         );
     }
