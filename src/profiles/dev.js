@@ -1,3 +1,3 @@
 module.exports = {
-    YELP_API_URL: 'http://localhost:8080/getShops'
+    YELP_API_URL: 'https://wwgfbt-service.herokuapp.com/getShops'
 }
