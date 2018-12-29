@@ -175,6 +175,22 @@ a{
    height: 100vh;
 }
 
+.move-boba {
+  transform: translate(0px, -18px);
+  offset-path: path('M51.5333333,415.337838 L188.5,2.95578557');
+  offset-distance: 0%;
+  animation: drink-boba 3s linear infinite;
+}
+
+@keyframes drink-boba {
+  from {
+    offset-distance: 0%;
+  }
+  to {
+    offset-distance: 100%;
+  }
+}
+
 @media screen and (max-width: 600px){
   .main {
     position: absolute;

@@ -40,6 +40,7 @@ class App extends Component {
         this.showHTML('tryAgain')
         this.hideHTML('locationInput')
         this.getShopList();
+        this.moveBoba()
         event.preventDefault();
     }
 
@@ -56,6 +57,11 @@ class App extends Component {
             document.getElementById(tagID).style.display = 'initial'
         }
 
+    }
+
+    // Adds boba movement class
+    moveBoba(){
+        document.getElementById('strawboba').classList.add('move-boba')
     }
 
     async getShopList() {
