@@ -39,6 +39,7 @@ class App extends Component {
     handleSubmit(event) {
         this.showHTML('weOutDiv')
         this.showHTML('tryAgain')
+        this.showHTML('history-title');
         this.hideHTML('locationInput')
         this.getShopList();
         this.restartBoba()
@@ -53,7 +54,7 @@ class App extends Component {
 
     // Helper function to show HTML
     showHTML(tagID) {
-        if (tagID === 'weOutDiv' || tagID === 'locationRef') {
+        if (tagID === 'weOutDiv' || tagID === 'locationRef' || tagID === 'history-title') {
             document.getElementById(tagID).style.display = 'block'
         } else {
             document.getElementById(tagID).style.display = 'initial'
@@ -154,6 +155,8 @@ class App extends Component {
         let item = document.createElement('a')
         item.href = url;
         item.innerHTML = shop;
+        item.className = 'history';
+        item.target = '_blank';
         div.insertBefore(item, div.firstChild);
     }
 
@@ -234,8 +237,8 @@ class App extends Component {
                     <br />
                     <button id="goButton" className='clickable brown-btn'>See where we goin&rsquo;</button>
                 </form>
-                <span className="clickable under-btn" id="tryAgain" onClick={() => { this.showHTML('locationInput'); this.showHTML('goButton'); this.hideHTML('weOutDiv'); this.hideHTML('tryAgain') }}>Try another location</span>
-                <p>History</p>
+                <span className="clickable under-btn" id="tryAgain" onClick={() => { this.showHTML('history-title'); this.showHTML('locationInput'); this.showHTML('goButton'); this.hideHTML('weOutDiv'); this.hideHTML('tryAgain') }}>Try another location</span>
+                <p id="history-title">History</p>
                 <div id="historyContainer">
                 </div>
             </React.Fragment>

@@ -161,6 +161,21 @@ a{
   margin-top: 4px;
 }
 
+#history-title {
+  display: none;
+  font-size: 16px;
+  margin-top: 20px;
+  margin-bottom: 0px;
+}
+
+.history {
+  color: #999999;
+  padding-left: 5px;
+  padding-right: 5px;
+  font-size: 16px;
+  text-decoration: underline;
+}
+
 @media screen and (max-width: 600px){
   .main {
     position: absolute;
