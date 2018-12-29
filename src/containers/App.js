@@ -42,6 +42,7 @@ class App extends Component {
         this.showHTML('tryAgain')
         this.hideHTML('locationInput')
         this.getShopList();
+        this.moveBoba()
         event.preventDefault();
     }
 
@@ -58,6 +59,11 @@ class App extends Component {
             document.getElementById(tagID).style.display = 'initial'
         }
 
+    }
+
+    // Adds boba movement class
+    moveBoba(){
+        document.getElementById('strawboba').classList.add('move-boba')
     }
 
     async getShopList() {
@@ -228,6 +234,9 @@ class App extends Component {
                         <BobaSVG />
                     </div> {/* end flex-container */}
                 </header>
+                <footer>
+                    <small>&copy; Copyright 2018, Made with <span aria-labelledby="jsx-a11y/accessible-emoji" role="img">❤</span>️ by the ABB</small>
+                </footer>
             </div>
         );
     }
