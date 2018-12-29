@@ -3,7 +3,13 @@
 }
 
 html, body {
+    overflow-x: hidden; 
+    overflow-y: hidden;
+    overflow: hidden;
+}
 
+body {
+ position: relative;
 }
 
 .App {
@@ -136,12 +142,17 @@ a{
 
 .brown-btn { 
   width: 261px; 
-  border-radius: 28px;  
+  border: none;
+  border-radius: 50px;  
   background-color: #544C45;
   font-size: 20px;
   padding: 15px 0 15px 0;
   color: white;
   font-weight: 600;
+}
+
+.brown-btn:focus {
+  outline: none;
 }
 
 .under-btn {
@@ -175,21 +186,27 @@ a{
    height: 100vh;
 }
 
-.move-boba {
-  transform: translate(0px, -18px);
-  offset-path: path('M51.5333333,415.337838 L188.5,2.95578557');
-  offset-distance: 0%;
-  animation: drink-boba 3s linear infinite;
+
+/* Chrome 29+ */
+@media screen and (-webkit-min-device-pixel-ratio:0)
+  and (min-resolution:.001dpcm) {
+    .move-boba {
+      transform: translate(0px, -18px);
+      offset-path: path('M51.5333333,415.337838 L188.5,2.95578557');
+      offset-distance: 0%;
+      animation: drink-boba 1s ease;
+    }
+
+    @keyframes drink-boba {
+      from {
+        offset-distance: 0%;
+      }
+      to {
+        offset-distance: 100%;
+      }
+    } 
 }
 
-@keyframes drink-boba {
-  from {
-    offset-distance: 0%;
-  }
-  to {
-    offset-distance: 100%;
-  }
-}
 
 @media screen and (max-width: 600px){
   .main {
@@ -199,15 +216,17 @@ a{
     max-width: 90%;
   }
   .drink {
-    width: 90%;
+    text-align: center;
+    width: 10%;
     max-height: 50vh;
     bottom: 0;
     position: absolute;
+    display: none;
   }
   .boba {
     z-index: 1;
     height: 410px;
-    width: 70%;
+    width: 30%;
     margin-left: 50%;
   }
 }

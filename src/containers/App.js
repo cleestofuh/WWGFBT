@@ -41,6 +41,7 @@ class App extends Component {
         this.showHTML('tryAgain')
         this.hideHTML('locationInput')
         this.getShopList();
+        this.restartBoba()
         this.moveBoba()
         event.preventDefault();
     }
@@ -62,6 +63,15 @@ class App extends Component {
     // Adds boba movement class
     moveBoba(){
         document.getElementById('strawboba').classList.add('move-boba')
+    }
+
+    // Adds boba movement class
+    restartBoba(){
+        document.getElementById('strawboba').style.webkitAnimation = 'none';
+        setTimeout(function() {
+            document.getElementById('strawboba').style.webkitAnimation = '';
+        }, 1);
+        document.getElementById('strawboba').classList.remove('move-boba')
     }
 
     async getShopList() {
