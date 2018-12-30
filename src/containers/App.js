@@ -1,8 +1,14 @@
 import React, { Component } from 'react'
 import './App.css'
-import { YELP_API_URL } from '../profiles/dev'
+import ReactGA from 'react-ga'
 
+// User Imports
+import { YELP_API_URL } from '../profiles/dev'
 import BobaSVG from '../components/bobaSVG'
+
+ReactGA.initialize('UA-73963331-3')
+ReactGA.pageview(window.location.pathname + window.location.search)
+
 
 class App extends Component {
     constructor(props) {
@@ -15,7 +21,7 @@ class App extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
         this.placeholder = 'Enter City or Zip';
         this.category = 'bubbletea';
-        this.maxHistory = 6;
+        this.maxHistory = 5;
     }
 
     // Mounts event listener after first render
@@ -37,6 +43,10 @@ class App extends Component {
 
     // Handles form submission
     handleSubmit(event) {
+        this.showHTML('weOutDiv')
+        this.showHTML('tryAgain')
+        this.showHTML('history-title')
+        this.showHTML('historyContainer')
         this.hideHTML('locationInput')
         this.getShopList()
         this.restartBoba()
@@ -72,32 +82,27 @@ class App extends Component {
         document.getElementById('strawboba').classList.remove('move-boba')
     }
 
-    showWeOut() {
-        this.hideHTML('loader')
-        this.showHTML('weOutDiv')
-        this.showHTML('tryAgain')
-        this.showHTML('history-title')
-        this.showHTML('historyContainer')
-    }
-
     async getShopList() {
         let response, shops
 
         // Checking localstorage for existence of location array
         if (window.localStorage.getItem(this.state.location)) {
-            this.showWeOut()
             shops = JSON.parse(window.localStorage.getItem(this.state.location))
         }
         else {
-            // Calls API, converts to json synchronously
-            this.showHTML('loader')
+            // Google Analytics handlers to push location info
+            ReactGA.event({
+                category: 'Location',
+                action: this.state.location,
+            })
+
+            // Calls API, converts to json synchronously 
             response = await fetch(`${YELP_API_URL}?category=${this.category}&location=${this.state.location}`)
             shops = await response.json()
             window.localStorage.setItem(this.state.location, JSON.stringify(shops))
         }
         // Error check for API response
         if (!shops.message.error && shops.data.length !== 0) {
-            this.showWeOut()
             this.showRandomShop(shops)
         }
         else {
@@ -238,7 +243,6 @@ class App extends Component {
                     <p id='errorText'></p>
                     {/*eslint-disable-next-line*/}
                     <div className="we-out" id="weOutDiv">
-                        <div class="loader" id = "loader"></div>
                         <span id="locationRef"></span>
                         {/*eslint-disable-next-line*/}
                         <p className="we-out-text">We out to <a target="_blank" id='shopNameContainer' href="#"></a></p>
@@ -271,7 +275,7 @@ class App extends Component {
                 <footer>
                     <small>Send us feedback at WWGFBT@gmail.com</small>
                     <br/>
-                    <small>&copy; Copyright 2018, Made with <span aria-labelledby="jsx-a11y/accessible-emoji" role="img">❤</span>️ by the ABB</small>
+                    <small>&copy; Copyright 2018, made with <span aria-labelledby="jsx-a11y/accessible-emoji" role="img">❤</span>️in California</small>
                 </footer>
             </div>
         );

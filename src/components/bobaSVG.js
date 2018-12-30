@@ -8,7 +8,7 @@ import React from 'react'
 const BobaSVG = (props) => {
     return (
         <div className="drink">
-            <svg className="boba" width="40vw" height="80vh" viewBox="0 0 210 459" version="1.1" xmlns="http://www.w3.org/2000/svg">
+            <svg className="boba" viewBox="0 0 210 459" version="1.1" xmlns="http://www.w3.org/2000/svg">
                 <title>big boba</title>
                 <g id="mobile" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
                     <g id="Landing-page" transform="translate(-83.000000, -353.000000)" fillRule="nonzero">
@@ -108,7 +108,6 @@ const BobaSVG = (props) => {
                     </g>
                 </g>
             </svg>
-            <div className="ball"></div>
         </div>
     )
 }
