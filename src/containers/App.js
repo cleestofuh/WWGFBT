@@ -301,11 +301,7 @@ class App extends Component {
                 <footer>
                     <small>Send us feedback at WWGFBT@gmail.com</small>
                     <br/>
-<<<<<<< HEAD
-                    <small>&copy; Copyright 2018, made with <span aria-labelledby="jsx-a11y/accessible-emoji" role="img">❤</span>️ by ABBs</small>
-=======
                     <small>&copy; Copyright 2018, made with <span aria-labelledby="jsx-a11y/accessible-emoji" role="img">❤</span> in California</small>
->>>>>>> 6c4899b144499f272cd5526310a96cbc65986bba
                 </footer>
             </div>
         );
