@@ -31,10 +31,14 @@ class App extends Component {
 
     // Listens to enter keystroke to display new shop
     onKeyPressed(e) {
-        if (e.key === 'Enter') {
+        if (e.key === 'Enter' && document.getElementById('seeAllModal').style.display === "none") {
             this.handleSubmit(e)
         }
+        else if (e.key === "Esc" || e.key === "Escape") {
+            this.setModal(false);
+        }
     }
+
 
     // Handles any change & keystroke on input field
     handleChange(event) {
@@ -246,6 +250,29 @@ class App extends Component {
         }
     }
 
+    // Turns modal on or off
+    setModal(on) {
+        let modal = document.getElementById('seeAllModal');
+        if (on) {
+            modal.style.display = "block";
+        } else {
+            modal.style.display = "none";
+        }
+    }
+
+    // Closes see all nearby modal on clicking outside of modal
+    checkExitModalOnClick(event) {
+        let modal = document.getElementById('seeAllModal');
+        let x = document.getElementsByClassName("close")[0];
+        if (event.target === modal) {
+            console.log("yes");
+        }
+
+        if (event.target === modal || event.target === x) {
+            modal.style.display = "none";    
+        }
+    }
+
     // Helper function to handle error condition
     showErrorText() {
         // TODO: I've created the error condition, do what you want with this part!
@@ -274,6 +301,13 @@ class App extends Component {
                         <div className="loader" id="loader"></div>
                         <img height="20px" alt="yelp rating" id="yelpRating" src={require("../assets/yelpstars/regular_5@3x.png")} />
                         <span id="reviewCount"></span>
+                    </div>
+                    <p id="see-all-title" onClick={() => {this.setModal(true);}}>See all nearby</p>
+                    <div id="seeAllModal" onClick={this.checkExitModalOnClick} className="see-all">
+                      <div className="see-all-content">
+                        <span className="close" onClick={() => {this.setModal(false);}}>&times;</span>
+                        <p>Some text in the Modal..</p>
+                      </div>
                     </div>
                     <br />
                     <button id="goButton" className='clickable brown-btn'>See where we goin&rsquo;</button>
