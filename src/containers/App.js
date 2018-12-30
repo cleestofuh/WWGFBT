@@ -1,8 +1,14 @@
 import React, { Component } from 'react'
 import './App.css'
-import { YELP_API_URL } from '../profiles/dev'
+import ReactGA from 'react-ga'
 
+// User Imports
+import { YELP_API_URL } from '../profiles/dev'
 import BobaSVG from '../components/bobaSVG'
+
+ReactGA.initialize('UA-73963331-3')
+ReactGA.pageview(window.location.pathname + window.location.search)
+
 
 class App extends Component {
     constructor(props) {
@@ -15,7 +21,7 @@ class App extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
         this.placeholder = 'Enter City or Zip';
         this.category = 'bubbletea';
-        this.maxHistory = 6;
+        this.maxHistory = 5;
     }
 
     // Mounts event listener after first render
@@ -84,6 +90,12 @@ class App extends Component {
             shops = JSON.parse(window.localStorage.getItem(this.state.location))
         }
         else {
+            // Google Analytics handlers to push location info
+            ReactGA.event({
+                category: 'Location',
+                action: this.state.location,
+            })
+
             // Calls API, converts to json synchronously 
             response = await fetch(`${YELP_API_URL}?category=${this.category}&location=${this.state.location}`)
             shops = await response.json()
