@@ -244,6 +244,8 @@ class App extends Component {
         // TODO: I've created the error condition, do what you want with this part!
         let errorContainer = document.getElementById('errorText')
         errorContainer.innerHTML = 'We couldn&rsquo;t find bubble tea places matching your location.'
+        this.showHTML('tryAgain')
+        this.hideHTML('loader')
         // console.log(shops.message.error)
     }
 
