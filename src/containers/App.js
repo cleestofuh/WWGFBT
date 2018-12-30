@@ -67,6 +67,9 @@ class App extends Component {
     showWeOut() {
         this.showHTML('weOutDiv')
         this.hideHTML('loader')
+        this.showHTML('yelpRating')
+        this.showHTML('shopNameContainer')
+        this.showHTML('reviewCount')
         this.showHTML('tryAgain')
         this.showHTML('history-title')
         this.showHTML('historyContainer')
@@ -74,12 +77,16 @@ class App extends Component {
     }
 
     showLoader() {
-        this.hideHTML('weOutDiv')
+        this.showHTML('weOutDiv')
         this.showHTML('loader')
+        this.hideHTML('shopNameContainer')
+        this.hideHTML('yelpRating')
+        this.hideHTML('reviewCount')
         this.hideHTML('goButton')
         this.hideHTML('history-title')
         this.hideHTML('historyContainer')
         this.hideHTML('goButton')
+        this.hideHTML('errorText')
     }
 
     // Adds boba movement class
@@ -244,6 +251,9 @@ class App extends Component {
         // TODO: I've created the error condition, do what you want with this part!
         let errorContainer = document.getElementById('errorText')
         errorContainer.innerHTML = 'We couldn&rsquo;t find bubble tea places matching your location.'
+        this.showHTML('errorText')
+        this.showHTML('tryAgain')
+        this.hideHTML('loader')
         // console.log(shops.message.error)
     }
 
@@ -256,12 +266,12 @@ class App extends Component {
                         <input id="locationInput" className="input-form" value={this.state.location} onChange={this.handleChange} placeholder={this.placeholder} onFocus={e => e.target.select()} />
                     </div>
                     <p id='errorText'></p>
-                    <div className="loader" id="loader"></div>
                     {/*eslint-disable-next-line*/}
                     <div className="we-out" id="weOutDiv">
                         <span id="locationRef"></span>
                         {/*eslint-disable-next-line*/}
                         <p className="we-out-text">We out to <a target="_blank" id='shopNameContainer' href="#"></a></p>
+                        <div className="loader" id="loader"></div>
                         <img height="20px" alt="yelp rating" id="yelpRating" src={require("../assets/yelpstars/regular_5@3x.png")} />
                         <span id="reviewCount"></span>
                     </div>

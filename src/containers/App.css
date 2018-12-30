@@ -103,6 +103,7 @@ a{
   font-weight: 600;
   max-height: 175px;
   min-height: 175px;
+  position: relative;
 }
 
 .we-out > p {
@@ -210,21 +211,18 @@ footer {
 }
 
 #loader {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  z-index: 1;
-  width: 150px;
-  height: 150px;
-  margin: -75px 0 0 -75px;
+  margin: auto;
+  width: 40px;
+  height: 40px;
   border: 16px solid #f3f3f3;
   border-radius: 50%;
   border-top: 16px solid #e8c46f;
-  width: 60px;
-  height: 60px;
-  -webkit-animation: spin 2s linear infinite;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
   animation: spin 2s linear infinite;
-  display: none;
 }
 
 @keyframes spin {
