@@ -43,10 +43,6 @@ class App extends Component {
 
     // Handles form submission
     handleSubmit(event) {
-        this.showHTML('weOutDiv')
-        this.showHTML('tryAgain')
-        this.showHTML('history-title')
-        this.showHTML('historyContainer')
         this.hideHTML('locationInput')
         this.getShopList()
         this.restartBoba()
@@ -66,6 +62,24 @@ class App extends Component {
         } else {
             document.getElementById(tagID).style.display = 'initial'
         }
+    }
+
+    showWeOut() {
+        this.showHTML('weOutDiv')
+        this.hideHTML('loader')
+        this.showHTML('tryAgain')
+        this.showHTML('history-title')
+        this.showHTML('historyContainer')
+        this.showHTML('goButton')
+    }
+
+    showLoader() {
+        this.hideHTML('weOutDiv')
+        this.showHTML('loader')
+        this.hideHTML('goButton')
+        this.hideHTML('history-title')
+        this.hideHTML('historyContainer')
+        this.hideHTML('goButton')
     }
 
     // Adds boba movement class
@@ -90,12 +104,12 @@ class App extends Component {
             shops = JSON.parse(window.localStorage.getItem(this.state.location))
         }
         else {
+            this.showLoader()
             // Google Analytics handlers to push location info
             ReactGA.event({
                 category: 'Location',
                 action: this.state.location,
             })
-
             // Calls API, converts to json synchronously 
             response = await fetch(`${YELP_API_URL}?category=${this.category}&location=${this.state.location}`)
             shops = await response.json()
@@ -116,6 +130,7 @@ class App extends Component {
 
     // Helper function to display a random boba shop
     showRandomShop(shops) {
+        this.showWeOut()
         // RNG number from 0 to array length
         let RNG = Math.floor(Math.random() * shops.data.length)
         // Updating result container
@@ -241,6 +256,7 @@ class App extends Component {
                         <input id="locationInput" className="input-form" value={this.state.location} onChange={this.handleChange} placeholder={this.placeholder} onFocus={e => e.target.select()} />
                     </div>
                     <p id='errorText'></p>
+                    <div className="loader" id="loader"></div>
                     {/*eslint-disable-next-line*/}
                     <div className="we-out" id="weOutDiv">
                         <span id="locationRef"></span>
