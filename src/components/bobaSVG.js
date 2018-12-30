@@ -108,6 +108,7 @@ const BobaSVG = (props) => {
                     </g>
                 </g>
             </svg>
+            <div className="ball"></div>
         </div>
     )
 }
