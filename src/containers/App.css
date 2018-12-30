@@ -255,7 +255,9 @@ footer {
   .main {
     z-index: 2;
     top: 50px;
-    max-width: 90%;
+    max-width: 100%;
+    padding-left: 8px;
+    padding-right: 8px;
   }
   .drink {
     text-align: center;
