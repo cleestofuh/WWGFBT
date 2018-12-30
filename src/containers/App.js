@@ -37,10 +37,6 @@ class App extends Component {
 
     // Handles form submission
     handleSubmit(event) {
-        this.showHTML('weOutDiv')
-        this.showHTML('tryAgain')
-        this.showHTML('history-title')
-        this.showHTML('historyContainer')
         this.hideHTML('locationInput')
         this.getShopList()
         this.restartBoba()
@@ -76,21 +72,32 @@ class App extends Component {
         document.getElementById('strawboba').classList.remove('move-boba')
     }
 
+    showWeOut() {
+        this.hideHTML('loader')
+        this.showHTML('weOutDiv')
+        this.showHTML('tryAgain')
+        this.showHTML('history-title')
+        this.showHTML('historyContainer')
+    }
+
     async getShopList() {
         let response, shops
 
         // Checking localstorage for existence of location array
         if (window.localStorage.getItem(this.state.location)) {
+            this.showWeOut()
             shops = JSON.parse(window.localStorage.getItem(this.state.location))
         }
         else {
-            // Calls API, converts to json synchronously 
+            // Calls API, converts to json synchronously
+            this.showHTML('loader')
             response = await fetch(`${YELP_API_URL}?category=${this.category}&location=${this.state.location}`)
             shops = await response.json()
             window.localStorage.setItem(this.state.location, JSON.stringify(shops))
         }
         // Error check for API response
         if (!shops.message.error && shops.data.length !== 0) {
+            this.showWeOut()
             this.showRandomShop(shops)
         }
         else {
@@ -231,6 +238,7 @@ class App extends Component {
                     <p id='errorText'></p>
                     {/*eslint-disable-next-line*/}
                     <div className="we-out" id="weOutDiv">
+                        <div class="loader" id = "loader"></div>
                         <span id="locationRef"></span>
                         {/*eslint-disable-next-line*/}
                         <p className="we-out-text">We out to <a target="_blank" id='shopNameContainer' href="#"></a></p>
