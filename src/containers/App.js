@@ -5,6 +5,7 @@ import ReactGA from 'react-ga'
 // User Imports
 import { YELP_API_URL } from '../profiles/dev'
 import BobaSVG from '../components/bobaSVG'
+import History from '../components/history'
 
 ReactGA.initialize('UA-73963331-3')
 ReactGA.pageview(window.location.pathname + window.location.search)
@@ -25,7 +26,6 @@ class App extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
         this.placeholder = 'Enter City or Zip';
         this.category = 'bubbletea';
-        this.maxHistory = 5;
     }
 
     // Mounts event listener after first render
@@ -160,7 +160,7 @@ class App extends Component {
         locationRef.innerHTML = address.join(", ")
 
         // Adding content to history
-        this.addShopToHistory(shops.data[RNG].name, shops.data[RNG].url)
+        History.addShopToHistory(shops.data[RNG].name, shops.data[RNG].url)
 
         // Truncate result based on screen size
         let maxNameLength = 20
@@ -181,30 +181,6 @@ class App extends Component {
         ratingContainer.src = this.getStarImages(rating)
 
         reviewCountContainer.innerHTML = shops.data[RNG].review_count + ' Reviews'
-    }
-
-    // Helper function to add shop+url to history
-    addShopToHistory(shop, url) {
-        let div = document.getElementById("historyContainer");
-
-        // Find potential duplicate in historyContainer div and remove it to readd it to the front
-        let duplicates = div.querySelectorAll("a[href='"+url+"']");
-        for (let i = 0; i < duplicates.length; i++) {
-            div.removeChild(duplicates[i]);
-        }
-
-        // Removes the last entry in the history if the container reaches capacity
-        if (div.childNodes.length >= this.maxHistory) {
-            div.removeChild(div.lastChild);
-        } 
-
-        // Adds a new text node to the front of the history
-        let item = document.createElement('a')
-        item.href = url;
-        item.innerHTML = shop;
-        item.className = 'history';
-        item.target = '_blank';
-        div.insertBefore(item, div.firstChild);
     }
 
     // Helper function to return yelp star img based on rating
@@ -321,10 +297,6 @@ class App extends Component {
     checkExitModalOnClick(event) {
         let modal = document.getElementById('seeAllModal');
         let x = document.getElementsByClassName("close")[0];
-        if (event.target === modal) {
-            console.log("yes");
-        }
-
         if (event.target === modal || event.target === x) {
             modal.style.display = "none";    
         }
@@ -383,9 +355,7 @@ class App extends Component {
                 }}>Try another location</span>
                 <span className="clickable under-btn" id="seeAllNearby" onClick={() => {this.setModal(true);}}>See all nearby</span>
 
-                <p id="history-title">History</p>
-                <div id="historyContainer">
-                </div>
+            <History />
             </React.Fragment>
         )
     }
