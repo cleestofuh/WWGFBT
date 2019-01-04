@@ -3,15 +3,21 @@ import './App.css'
 import ReactGA from 'react-ga'
 
 // User Imports
-import { YELP_API_URL } from '../profiles/dev'
+import { YELP_URL, YELP_AUTO_URL } from '../profiles/dev'
 import BobaSVG from '../components/bobaSVG'
+import History from '../components/history'
 
 ReactGA.initialize('UA-73963331-3')
 ReactGA.pageview(window.location.pathname + window.location.search)
 
 var http = require("http");
+<<<<<<< HEAD
 setInterval(function() {
     http.get("https://wwgfbt.herokuapp.com");
+=======
+setInterval(function () {
+    http.get("http://wwgfbt.herokuapp.com");
+>>>>>>> d3d7e83bff8f64438cc3c2a69d5856081fdb3dde
 }, 1500000); // every 25 minutes (1,500,00)
 
 class App extends Component {
@@ -19,23 +25,41 @@ class App extends Component {
         super(props);
         this.state = {
             location: '',
+            submittedOnce: false
         };
 
-        this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
-        this.placeholder = 'Enter City or Zip';
-        this.category = 'bubbletea';
-        this.maxHistory = 5;
+        this.handleChange = this.handleChange.bind(this)
+        this.handleSubmit = this.handleSubmit.bind(this)
+        this.handleTryAgain = this.handleTryAgain.bind(this)
+        this.placeholder = 'Enter Address, City, or Zip'
+        this.category = 'bubbletea'
+        this.modalOn = false
+        this.longitude = null
+        this.latitude = null
+        this.autoLocation = false
     }
 
     // Mounts event listener after first render
     componentDidMount() {
         document.addEventListener('keydown', this.onKeyPressed.bind(this))
+        this.getLocation()
+    }
+
+    // Asking user for current location
+    getLocation() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition((position) => {
+                this.latitude = position.coords.latitude
+                this.longitude = position.coords.longitude
+                this.autoLocation = true
+                this.handleSubmit(null)
+            })
+        }
     }
 
     // Listens to enter keystroke to display new shop
     onKeyPressed(e) {
-        if (e.key === 'Enter' && document.getElementById('seeAllModal').style.display === "none") {
+        if (e.key === 'Enter' && !this.modalOn) {
             this.handleSubmit(e)
         }
         else if (e.key === "Esc" || e.key === "Escape") {
@@ -46,16 +70,31 @@ class App extends Component {
 
     // Handles any change & keystroke on input field
     handleChange(event) {
+        this.autoLocation = false
         this.setState({ location: event.target.value });
     }
 
     // Handles form submission
     handleSubmit(event) {
+        this.setState({ submittedOnce: true })
         this.hideHTML('locationInput')
         this.getShopList()
         this.restartBoba()
         this.moveBoba()
-        event.preventDefault()
+        if(event){
+            event.preventDefault()
+        }
+    }
+
+    // Handles try again button clicked
+    handleTryAgain(){
+        this.setState({ submittedOnce: false })
+        this.showHTML('locationInput');
+        this.showHTML('goButton');
+        this.hideHTML('weOutDiv');
+        this.hideHTML('tryAgain');
+        this.hideHTML('seeAllNearby')
+        this.hideHTML('errorText');
     }
 
     // Helper function to hide HTML
@@ -83,6 +122,7 @@ class App extends Component {
         this.showHTML('history-title')
         this.showHTML('historyContainer')
         this.showHTML('goButton')
+        this.showHTML('locationRef')
     }
 
     showLoader() {
@@ -96,17 +136,18 @@ class App extends Component {
         this.hideHTML('historyContainer')
         this.hideHTML('goButton')
         this.hideHTML('errorText')
+        this.hideHTML('locationRef')
     }
 
     // Adds boba movement class
-    moveBoba(){
+    moveBoba() {
         document.getElementById('strawboba').classList.add('move-boba')
     }
 
     // Adds boba movement class
-    restartBoba(){
+    restartBoba() {
         document.getElementById('strawboba').style.webkitAnimation = 'none';
-        setTimeout(function() {
+        setTimeout(function () {
             document.getElementById('strawboba').style.webkitAnimation = '';
         }, 1);
         document.getElementById('strawboba').classList.remove('move-boba')
@@ -119,18 +160,40 @@ class App extends Component {
         if (window.localStorage.getItem(this.state.location)) {
             shops = JSON.parse(window.localStorage.getItem(this.state.location))
         }
+        else if(window.localStorage.getItem(this.longitude + ' ' + this.latitude ) && this.autoLocation){
+            shops = JSON.parse(window.localStorage.getItem(this.longitude + ' ' + this.latitude))
+        }
         else {
             this.showLoader()
             // Google Analytics handlers to push location info
-            ReactGA.event({
-                category: 'Location',
-                action: this.state.location,
-            })
-            // Calls API, converts to json synchronously 
-            response = await fetch(`${YELP_API_URL}?category=${this.category}&location=${this.state.location}`)
-            shops = await response.json()
-            window.localStorage.setItem(this.state.location, JSON.stringify(shops))
+            if(this.state.location){
+                ReactGA.event({
+                    category: 'Location',
+                    action: this.state.location,
+                })
+            }
+            else{
+                ReactGA.event({
+                    category: 'Location',
+                    action: this.longitude + ' ' + this.latitude,
+                })
+            }
+            
+
+            // Get call based on if auto location or not
+            // Also sets localStorage key as long/lat for autolocation instead of input parameter
+            if(this.autoLocation){
+                response = await fetch(`${YELP_AUTO_URL}?category=${this.category}&longitude=${this.longitude}&latitude=${this.latitude}`)
+                shops = await response.json()
+                window.localStorage.setItem(this.longitude + ' ' + this.latitude, JSON.stringify(shops))
+            }
+            else{
+                response = await fetch(`${YELP_URL}?category=${this.category}&location=${this.state.location}`)
+                shops = await response.json()
+                window.localStorage.setItem(this.state.location, JSON.stringify(shops))
+            }
         }
+
         // Error check for API response
         if (!shops.message.error && shops.data.length !== 0) {
             this.showRandomShop(shops)
@@ -160,7 +223,7 @@ class App extends Component {
         locationRef.innerHTML = address.join(", ")
 
         // Adding content to history
-        this.addShopToHistory(shops.data[RNG].name, shops.data[RNG].url)
+        History.addShopToHistory(shops.data[RNG].name, shops.data[RNG].url)
 
         // Truncate result based on screen size
         let maxNameLength = 20
@@ -181,30 +244,6 @@ class App extends Component {
         ratingContainer.src = this.getStarImages(rating)
 
         reviewCountContainer.innerHTML = shops.data[RNG].review_count + ' Reviews'
-    }
-
-    // Helper function to add shop+url to history
-    addShopToHistory(shop, url) {
-        let div = document.getElementById("historyContainer");
-
-        // Find potential duplicate in historyContainer div and remove it to readd it to the front
-        let duplicates = div.querySelectorAll("a[href='"+url+"']");
-        for (let i = 0; i < duplicates.length; i++) {
-            div.removeChild(duplicates[i]);
-        }
-
-        // Removes the last entry in the history if the container reaches capacity
-        if (div.childNodes.length >= this.maxHistory) {
-            div.removeChild(div.lastChild);
-        } 
-
-        // Adds a new text node to the front of the history
-        let item = document.createElement('a')
-        item.href = url;
-        item.innerHTML = shop;
-        item.className = 'history';
-        item.target = '_blank';
-        div.insertBefore(item, div.firstChild);
     }
 
     // Helper function to return yelp star img based on rating
@@ -266,7 +305,7 @@ class App extends Component {
         // Update the value of results
         let results = document.getElementById("seeAllContentResults")
         let numOfShops = shops.data.length;
-        results.innerHTML = "Results ("+numOfShops+")";
+        results.innerHTML = "Results (" + numOfShops + ")";
 
         // Loop through nearby shops to add data to scroller contents 
         for (let i = 0; i < numOfShops; i++) {
@@ -292,12 +331,12 @@ class App extends Component {
             let stars = document.createElement('img');
             stars.className = "clickable see-all-entry-stars";
             stars.alt = "yelp rating";
-            stars.onclick = function(){window.open(url)};
+            stars.onclick = function () { window.open(url) };
             stars.src = this.getStarImages(rating);
             entry.appendChild(stars);
 
             // Adds dividers in between entries
-            if (i < numOfShops-1) {
+            if (i < numOfShops - 1) {
                 let divider = document.createElement('hr');
                 divider.className = "entry-divider";
                 entry.appendChild(divider);
@@ -309,11 +348,13 @@ class App extends Component {
 
     // Turns modal on or off
     setModal(on) {
-        let modal = document.getElementById('seeAllModal');
+        let modal = document.getElementById('seeAllModal')
         if (on) {
-            modal.style.display = "block";
+            this.modalOn = true
+            modal.style.display = "block"
         } else {
-            modal.style.display = "none";
+            this.modalOn = false
+            modal.style.display = "none"
         }
     }
 
@@ -321,12 +362,8 @@ class App extends Component {
     checkExitModalOnClick(event) {
         let modal = document.getElementById('seeAllModal');
         let x = document.getElementsByClassName("close")[0];
-        if (event.target === modal) {
-            console.log("yes");
-        }
-
         if (event.target === modal || event.target === x) {
-            modal.style.display = "none";    
+            modal.style.display = "none";
         }
     }
 
@@ -361,31 +398,27 @@ class App extends Component {
                     </div>
                     <div id="seeAllModal" onClick={this.checkExitModalOnClick} className="see-all">
                         <div className="see-all-content">
-                            <span className="clickable close" onClick={() => {this.setModal(false);}}>&times;</span>
+                            <span className="clickable close" onClick={() => { this.setModal(false); }}>&times;</span>
                             <h1 className="see-all-content-header">All nearby bubble tea spots</h1>
                             <p id="seeAllContentResults"></p>
                             <div id="seeAllScroller">
 
                             </div>
-                            <button type="button" id="closeButton" className='clickable close-btn brown-btn' onClick={() => {this.setModal(false);}}>Close</button>
+                            <button type="button" id="closeButton" className='clickable close-btn brown-btn' onClick={() => { this.setModal(false); }}>Close</button>
                         </div>
                     </div>
                     <br />
-                    <button id="goButton" className='clickable brown-btn' onClick={this.handleSubmit}>See where we goin&rsquo;</button>
+                    <button id="goButton" className='clickable brown-btn' onClick={this.handleSubmit}>
+                        {!this.state.submittedOnce ?
+                            <React.Fragment>See where we goin&rsquo;</React.Fragment>
+                            : <React.Fragment>Find me another!</React.Fragment>
+                        }
+                    </button>
                 </form>
-                <span className="clickable under-btn" id="tryAgain" onClick={() => { 
-                    this.showHTML('locationInput'); 
-                    this.showHTML('goButton');
-                    this.hideHTML('weOutDiv'); 
-                    this.hideHTML('tryAgain');
-                    this.hideHTML('seeAllNearby')
-                    this.hideHTML('errorText');
-                }}>Try another location</span>
-                <span className="clickable under-btn" id="seeAllNearby" onClick={() => {this.setModal(true);}}>See all nearby</span>
+                <span className="clickable under-btn" id="tryAgain" onClick={this.handleTryAgain}>Try another location</span>
+                <span className="clickable under-btn" id="seeAllNearby" onClick={() => { this.setModal(true); }}>See all nearby</span>
 
-                <p id="history-title">History</p>
-                <div id="historyContainer">
-                </div>
+                <History />
             </React.Fragment>
         )
     }
@@ -404,7 +437,7 @@ class App extends Component {
                 </header>
                 <footer>
                     <small>Send us feedback at WWGFBT@gmail.com</small>
-                    <br/>
+                    <br />
                     <small>&copy; Copyright 2018, made with <span aria-labelledby="jsx-a11y/accessible-emoji" role="img">❤</span> in California</small>
                 </footer>
             </div>
