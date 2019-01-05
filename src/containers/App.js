@@ -60,7 +60,7 @@ class App extends Component {
             this.handleSubmit(e)
         }
         else if ((this.state.modalOn) && (e.key === "Esc" || e.key === "Escape")) {
-            this.hideHTML('seeAllModal');
+            this.hideHTML(['seeAllModal']);
         }
     }
 
@@ -74,7 +74,7 @@ class App extends Component {
     // Handles form submission
     handleSubmit(event) {
         this.setState({ submittedOnce: true })
-        this.hideHTML('locationInput')
+        this.hideHTML(['locationInput'])
         this.getShopList()
         this.restartBoba()
         this.moveBoba()
@@ -87,62 +87,48 @@ class App extends Component {
     handleTryAgain(){
         this.setState({ submittedOnce: false })
         this.setState({ modalOn: false })
-        this.showHTML('locationInput');
-        this.showHTML('goButton');
-        this.hideHTML('weOutDiv');
-        this.hideHTML('tryAgain');
-        this.hideHTML('seeAllNearby')
-        this.hideHTML('errorText');
+        this.showHTML(['locationInput','goButton']);
+        this.hideHTML(['weOutDiv','tryAgain','seeAllNearby','errorText'])
     }
 
     handleSeeAllNearby() {
         if (!this.state.modalOn) {
             this.setState({ modalOn: true })
         } else {
-            this.showHTML('seeAllModal')
+            this.showHTML(['seeAllModal'])
         }
     }
 
     // Helper function to hide HTML
-    hideHTML(tagID) {
-        document.getElementById(tagID).style.display = 'none'
+    hideHTML(tagIDs) {
+        tagIDs.forEach(function(tagID) {
+            document.getElementById(tagID).style.display = 'none'
+        });
     }
 
     // Helper function to show HTML
-    showHTML(tagID) {
-        if (tagID === 'weOutDiv' || tagID === 'locationRef' || tagID === 'history-title') {
-            document.getElementById(tagID).style.display = 'block'
-        } else {
-            document.getElementById(tagID).style.display = 'initial'
-        }
+    showHTML(tagIDs) {
+            tagIDs.forEach(function(tagID) {
+            if (tagID === 'weOutDiv' || tagID === 'locationRef' || tagID === 'history-title') {
+                document.getElementById(tagID).style.display = 'block'
+            } else {
+                document.getElementById(tagID).style.display = 'initial'
+            }
+        });
     }
 
     showWeOut() {
-        this.showHTML('weOutDiv')
-        this.hideHTML('loader')
-        this.showHTML('yelpRating')
-        this.showHTML('shopNameContainer')
-        this.showHTML('reviewCount')
-        this.showHTML('tryAgain')
-        this.showHTML('seeAllNearby')
-        this.showHTML('history-title')
-        this.showHTML('historyContainer')
-        this.showHTML('goButton')
-        this.showHTML('locationRef')
+        this.showHTML(['weOutDiv','yelpRating','shopNameContainer',
+                       'reviewCount','tryAgain','seeAllNearby',
+                       'history-title','historyContainer','goButton','locationRef'])
+        this.hideHTML(['loader'])
     }
 
     showLoader() {
-        this.showHTML('weOutDiv')
-        this.showHTML('loader')
-        this.hideHTML('shopNameContainer')
-        this.hideHTML('yelpRating')
-        this.hideHTML('reviewCount')
-        this.hideHTML('goButton')
-        this.hideHTML('history-title')
-        this.hideHTML('historyContainer')
-        this.hideHTML('goButton')
-        this.hideHTML('errorText')
-        this.hideHTML('locationRef')
+        this.showHTML(['weOutDiv','loader'])
+        this.hideHTML(['shopNameContainer','yelpRating','reviewCount',
+                       'goButton', 'history-title', 'historyContainer',
+                       'errorText', 'locationRef'])
     }
 
     // Adds boba movement class
@@ -206,10 +192,7 @@ class App extends Component {
         }
         else {
             this.showErrorText()
-            this.hideHTML('weOutDiv')
-            this.hideHTML('goButton')
-            this.hideHTML('history-title')
-            this.hideHTML('historyContainer')
+            this.hideHTML(['weOutDiv','goButton','history-title','historyContainer'])
         }
     }
 
@@ -305,9 +288,8 @@ class App extends Component {
         // TODO: I've created the error condition, do what you want with this part!
         let errorContainer = document.getElementById('errorText')
         errorContainer.innerHTML = 'We couldn&rsquo;t find bubble tea places matching your location.'
-        this.showHTML('errorText')
-        this.showHTML('tryAgain')
-        this.hideHTML('loader')
+        this.showHTML(['errorText', 'tryAgain'])
+        this.hideHTML(['loader'])
         // console.log(shops.message.error)
     }
 
