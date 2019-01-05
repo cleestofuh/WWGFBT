@@ -6,6 +6,7 @@ import ReactGA from 'react-ga'
 import { YELP_URL, YELP_AUTO_URL } from '../profiles/dev'
 import BobaSVG from '../components/bobaSVG'
 import History from '../components/history'
+import SeeAllNearby from '../components/seeAllNearby'
 
 ReactGA.initialize('UA-73963331-3')
 ReactGA.pageview(window.location.pathname + window.location.search)
@@ -28,7 +29,6 @@ class App extends Component {
         this.handleTryAgain = this.handleTryAgain.bind(this)
         this.placeholder = 'Enter Address, City, or Zip'
         this.category = 'bubbletea'
-        this.modalOn = false
         this.longitude = null
         this.latitude = null
         this.autoLocation = false
@@ -54,11 +54,11 @@ class App extends Component {
 
     // Listens to enter keystroke to display new shop
     onKeyPressed(e) {
-        if (e.key === 'Enter' && !this.modalOn) {
+        if (e.key === 'Enter' && !SeeAllNearby.modalOn) {
             this.handleSubmit(e)
         }
         else if (e.key === "Esc" || e.key === "Escape") {
-            this.setModal(false);
+            SeeAllNearby.setModal(false);
         }
     }
 
@@ -174,7 +174,6 @@ class App extends Component {
                 })
             }
             
-
             // Get call based on if auto location or not
             // Also sets localStorage key as long/lat for autolocation instead of input parameter
             if(this.autoLocation){
@@ -192,7 +191,7 @@ class App extends Component {
         // Error check for API response
         if (!shops.message.error && shops.data.length !== 0) {
             this.showRandomShop(shops)
-            this.createSeeAllNearby(shops)
+            SeeAllNearby.createSeeAllNearby(shops, this.getStarImages)
         }
         else {
             this.showErrorText()
@@ -290,78 +289,6 @@ class App extends Component {
         }
     }
 
-    // Helper function to create See all nearby modal
-    createSeeAllNearby(shops) {
-        let div = document.getElementById("seeAllScroller");
-        // Clears the previous contents of the scroller
-        while (div.firstChild) {
-            div.removeChild(div.firstChild);
-        }
-        // Update the value of results
-        let results = document.getElementById("seeAllContentResults")
-        let numOfShops = shops.data.length;
-        results.innerHTML = "Results (" + numOfShops + ")";
-
-        // Loop through nearby shops to add data to scroller contents 
-        for (let i = 0; i < numOfShops; i++) {
-            let name = shops.data[i].name;
-            let rating = shops.data[i].rating;
-            let url = shops.data[i].url;
-
-            let entry = document.createElement('div');
-            entry.className = "see-all-entry"
-
-            // Create clickable name element in its own line
-            let line = document.createElement('p');
-            let shop = document.createElement('a');
-            line.className = "see-all-entry-container"
-            shop.className = "clickable see-all-entry-name";
-            shop.href = url;
-            shop.target = "_blank";
-            shop.innerHTML = name;
-            line.appendChild(shop);
-            entry.appendChild(line);
-
-            // Grab stars img and apply to entry
-            let stars = document.createElement('img');
-            stars.className = "clickable see-all-entry-stars";
-            stars.alt = "yelp rating";
-            stars.onclick = function () { window.open(url) };
-            stars.src = this.getStarImages(rating);
-            entry.appendChild(stars);
-
-            // Adds dividers in between entries
-            if (i < numOfShops - 1) {
-                let divider = document.createElement('hr');
-                divider.className = "entry-divider";
-                entry.appendChild(divider);
-            }
-
-            div.appendChild(entry);
-        }
-    }
-
-    // Turns modal on or off
-    setModal(on) {
-        let modal = document.getElementById('seeAllModal')
-        if (on) {
-            this.modalOn = true
-            modal.style.display = "block"
-        } else {
-            this.modalOn = false
-            modal.style.display = "none"
-        }
-    }
-
-    // Closes see all nearby modal on clicking outside of modal
-    checkExitModalOnClick(event) {
-        let modal = document.getElementById('seeAllModal');
-        let x = document.getElementsByClassName("close")[0];
-        if (event.target === modal || event.target === x) {
-            modal.style.display = "none";
-        }
-    }
-
     // Helper function to handle error condition
     showErrorText() {
         // TODO: I've created the error condition, do what you want with this part!
@@ -391,17 +318,7 @@ class App extends Component {
                         <img height="20px" alt="yelp rating" id="yelpRating" src={require("../assets/yelpstars/regular_5@3x.png")} />
                         <span id="reviewCount"></span>
                     </div>
-                    <div id="seeAllModal" onClick={this.checkExitModalOnClick} className="see-all">
-                        <div className="see-all-content">
-                            <span className="clickable close" onClick={() => { this.setModal(false); }}>&times;</span>
-                            <h1 className="see-all-content-header">All nearby bubble tea spots</h1>
-                            <p id="seeAllContentResults"></p>
-                            <div id="seeAllScroller">
-
-                            </div>
-                            <button type="button" id="closeButton" className='clickable close-btn brown-btn' onClick={() => { this.setModal(false); }}>Close</button>
-                        </div>
-                    </div>
+                    <SeeAllNearby />
                     <br />
                     <button id="goButton" className='clickable brown-btn' onClick={this.handleSubmit}>
                         {!this.state.submittedOnce ?
@@ -411,7 +328,7 @@ class App extends Component {
                     </button>
                 </form>
                 <span className="clickable under-btn" id="tryAgain" onClick={this.handleTryAgain}>Try another location</span>
-                <span className="clickable under-btn" id="seeAllNearby" onClick={() => { this.setModal(true); }}>See all nearby</span>
+                <span className="clickable under-btn" id="seeAllNearby" onClick={() => { SeeAllNearby.setModal(true); }}>See all nearby</span>
 
                 <History />
             </React.Fragment>
