@@ -326,11 +326,7 @@ class App extends Component {
         } else {
             modal = null;
         }
-        return (
-            <React.Fragment>
-                {modal}
-            </React.Fragment>
-        )
+        return modal
     }
 
     // Helper function to render form

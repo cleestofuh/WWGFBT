@@ -1,7 +1,10 @@
 import React, { Component } from 'react'
 
 class History extends Component {
-	static maxHistory = 5;
+    constructor(props) {
+        super(props);
+        this.maxHistory = 5;
+    }
 
     // Helper function to add shop+url to history
     static addShopToHistory(shop, url) {
