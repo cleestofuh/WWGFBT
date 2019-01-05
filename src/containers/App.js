@@ -21,12 +21,14 @@ class App extends Component {
         super(props);
         this.state = {
             location: '',
-            submittedOnce: false
+            submittedOnce: false,
+            modalOn: false
         };
 
         this.handleChange = this.handleChange.bind(this)
         this.handleSubmit = this.handleSubmit.bind(this)
         this.handleTryAgain = this.handleTryAgain.bind(this)
+        this.handleSeeAllNearby = this.handleSeeAllNearby.bind(this)
         this.placeholder = 'Enter Address, City, or Zip'
         this.category = 'bubbletea'
         this.longitude = null
@@ -54,11 +56,11 @@ class App extends Component {
 
     // Listens to enter keystroke to display new shop
     onKeyPressed(e) {
-        if (e.key === 'Enter' && !SeeAllNearby.modalOn) {
+        if (e.key === 'Enter' && !this.state.modalOn) {
             this.handleSubmit(e)
         }
-        else if (e.key === "Esc" || e.key === "Escape") {
-            SeeAllNearby.setModal(false);
+        else if ((this.state.modalOn) && (e.key === "Esc" || e.key === "Escape")) {
+            this.hideHTML('seeAllModal');
         }
     }
 
@@ -84,12 +86,21 @@ class App extends Component {
     // Handles try again button clicked
     handleTryAgain(){
         this.setState({ submittedOnce: false })
+        this.setState({ modalOn: false })
         this.showHTML('locationInput');
         this.showHTML('goButton');
         this.hideHTML('weOutDiv');
         this.hideHTML('tryAgain');
         this.hideHTML('seeAllNearby')
         this.hideHTML('errorText');
+    }
+
+    handleSeeAllNearby() {
+        if (!this.state.modalOn) {
+            this.setState({ modalOn: true })
+        } else {
+            this.showHTML('seeAllModal')
+        }
     }
 
     // Helper function to hide HTML
@@ -191,7 +202,7 @@ class App extends Component {
         // Error check for API response
         if (!shops.message.error && shops.data.length !== 0) {
             this.showRandomShop(shops)
-            SeeAllNearby.createSeeAllNearby(shops, this.getStarImages)
+            //SeeAllNearby.createSeeAllNearby(shops, this.getStarImages)
         }
         else {
             this.showErrorText()
@@ -300,6 +311,28 @@ class App extends Component {
         // console.log(shops.message.error)
     }
 
+    // Helper function to render modal
+    renderModal()
+    {
+        let modal, shops;
+        if (this.state.modalOn) {
+            if (window.localStorage.getItem(this.state.location)) {
+                shops = JSON.parse(window.localStorage.getItem(this.state.location));
+            }
+            else if(window.localStorage.getItem(this.longitude + ' ' + this.latitude ) && this.autoLocation){
+                shops = JSON.parse(window.localStorage.getItem(this.longitude + ' ' + this.latitude));
+            }
+            modal = <SeeAllNearby shops={shops} getStarImages={this.getStarImages}/>;
+        } else {
+            modal = null;
+        }
+        return (
+            <React.Fragment>
+                {modal}
+            </React.Fragment>
+        )
+    }
+
     // Helper function to render form
     renderForm() {
         return (
@@ -318,7 +351,7 @@ class App extends Component {
                         <img height="20px" alt="yelp rating" id="yelpRating" src={require("../assets/yelpstars/regular_5@3x.png")} />
                         <span id="reviewCount"></span>
                     </div>
-                    <SeeAllNearby />
+                    {this.renderModal()}
                     <br />
                     <button id="goButton" className='clickable brown-btn' onClick={this.handleSubmit}>
                         {!this.state.submittedOnce ?
@@ -328,7 +361,7 @@ class App extends Component {
                     </button>
                 </form>
                 <span className="clickable under-btn" id="tryAgain" onClick={this.handleTryAgain}>Try another location</span>
-                <span className="clickable under-btn" id="seeAllNearby" onClick={() => { SeeAllNearby.setModal(true); }}>See all nearby</span>
+                <span className="clickable under-btn" id="seeAllNearby" onClick={this.handleSeeAllNearby}>See all nearby</span>
 
                 <History />
             </React.Fragment>

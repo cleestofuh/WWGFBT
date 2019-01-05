@@ -188,7 +188,7 @@ a{
 
 /* See all results modal (background) */
 .see-all {
-  display: none; /* Hidden by default */
+  display: block; /* Shown on rendering  */
   position: fixed; /* Stay in place */
   z-index: 1; /* Sit on top */
   left: 0;

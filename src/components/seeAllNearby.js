@@ -1,10 +1,18 @@
 import React, { Component } from 'react';
 
 class SeeAllNearby extends Component {
-	static modalOn = false;
+	constructor(props) {
+		super(props);
+		this.shops = props.shops;
+		this.getStarImages = props.getStarImages;
+	}
+
+    componentDidMount() {
+        this.createSeeAllNearby(this.shops, this.getStarImages);
+    }
 
     // Helper function to create See all nearby modal
-    static createSeeAllNearby(shops, getStarImages) {
+    createSeeAllNearby(shops, getStarImages) {
         let div = document.getElementById("seeAllScroller");
         // Clears the previous contents of the scroller
         while (div.firstChild) {
@@ -54,19 +62,17 @@ class SeeAllNearby extends Component {
     }
 
     // Turns modal on or off
-    static setModal(on) {
+    setModal(on) {
         let modal = document.getElementById('seeAllModal')
         if (on) {
-            this.modalOn = true
             modal.style.display = "block"
         } else {
-            this.modalOn = false
             modal.style.display = "none"
         }
     }
 
     // Closes see all nearby modal on clicking outside of modal
-    static checkExitModalOnClick(event) {
+    checkExitModalOnClick(event) {
         let modal = document.getElementById('seeAllModal');
         let x = document.getElementsByClassName("close")[0];
         if (event.target === modal || event.target === x) {
@@ -76,15 +82,15 @@ class SeeAllNearby extends Component {
 
     render() {
     	return (
-            <div id="seeAllModal" onClick={SeeAllNearby.checkExitModalOnClick} className="see-all">
+            <div id="seeAllModal" onClick={this.checkExitModalOnClick} className="see-all">
                 <div className="see-all-content">
-                    <span className="clickable close" onClick={() => { SeeAllNearby.setModal(false); }}>&times;</span>
+                    <span className="clickable close" onClick={() => { this.setModal(false); }}>&times;</span>
                     <h1 className="see-all-content-header">All nearby bubble tea spots</h1>
                     <p id="seeAllContentResults"></p>
                     <div id="seeAllScroller">
 
                     </div>
-                    <button type="button" id="closeButton" className='clickable close-btn brown-btn' onClick={() => { SeeAllNearby.setModal(false); }}>Close</button>
+                    <button type="button" id="closeButton" className='clickable close-btn brown-btn' onClick={() => { this.setModal(false); }}>Close</button>
                 </div>
             </div>
         );
