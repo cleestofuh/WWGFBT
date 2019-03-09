@@ -13,7 +13,7 @@ ReactGA.pageview(window.location.pathname + window.location.search)
 
 var http = require("http");
 setInterval(function() {
-    http.get("https://wwgfbt.herokuapp.com");
+    http.get("http://wwgfbt.herokuapp.com");
 }, 1500000); // every 25 minutes (1,500,00)
 
 class App extends Component {
